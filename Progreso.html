@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Progreso - Fitness</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+                  url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    /* Modificadores de Glassmorphism sobre clases de Bulma */
+    .glass-box {
+      background: rgba(255, 255, 255, 0.15) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px !important;
+      color: #ffffff !important;
+    }
+
+    .title, .subtitle, strong, th, td {
+      color: #ffffff !important;
+      letter-spacing: 1px;
+    }
+
+    .table {
+      background-color: transparent !important;
+      color: #ffffff !important;
+    }
+
+    .table th {
+      border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .table td {
+      border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .progress {
+      height: 10px !important;
+    }
+
+    .is-mobile {
+      letter-spacing: 1px;  
+    }
+  </style>
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 960px;">
+
+
+<div class="box glass-box mb-5">
+  <div class="level is-mobile">
+    <div class="level-left">
+      <div class="is-flex is-flex-direction-column">
+        <h1 class="title is-4 mb-2" style="line-height: 1.2;">Mi Evolución</h1>
+        <p class="subtitle is-6 has-text-grey-light m-0" style="line-height: 1.2;">
+          Objetivo Activo: <strong>Ganar Masa Muscular</strong>
+        </p>
+      </div>
+    </div>
+    <div class="level-right">
+      <span class="tag is-success is-light is-rounded">Semana 4 de 12</span>
+    </div>
+  </div>
+</div>
+
+    <!-- Indicadores Automáticos (Métricas Principales) -->
+    <div class="columns is-multiline mb-5">
+      <div class="column is-4">
+        <div class="box glass-box has-text-centered">
+          <p class="heading has-text-grey-light">Peso Actual</p>
+          <p class="title is-3 my-2">75.2 kg</p>
+          <p class="is-size-7 has-text-success">↑ +1.2 kg este mes</p>
+        </div>
+      </div>
+      <div class="column is-4">
+        <div class="box glass-box has-text-centered">
+          <p class="heading has-text-grey-light">% Grasa Corporal</p>
+          <p class="title is-3 my-2">14.5%</p>
+          <p class="is-size-7 has-text-success">↓ -0.8% este mes</p>
+        </div>
+      </div>
+      <div class="column is-4">
+        <div class="box glass-box has-text-centered">
+          <p class="heading has-text-grey-light">Adherencia Plan</p>
+          <p class="title is-3 my-2">92%</p>
+          <p class="is-size-7 has-text-info">Completado con éxito</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paneles de Progreso: Nutrición y Entrenamiento -->
+    <div class="columns mb-5">
+      
+      <!-- Cumplimiento Nutricional -->
+      <div class="column is-6">
+        <div class="box glass-box h-100">
+          <h2 class="title is-5 mb-4">Cumplimiento Nutricional (Hoy)</h2>
+          
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Calorías Totales</span>
+              <strong>2,450 / 2,700 kcal</strong>
+            </div>
+            <progress class="progress is-info" value="88" max="100">88%</progress>
+          </div>
+
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Proteínas</span>
+              <strong>160g / 175g</strong>
+            </div>
+            <progress class="progress is-success" value="90" max="100">90%</progress>
+          </div>
+
+          <div class="mb-2">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Carbohidratos</span>
+              <strong>280g / 300g</strong>
+            </div>
+            <progress class="progress is-warning" value="82" max="100">82%</progress>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avance de Entrenamiento -->
+      <div class="column is-6">
+        <div class="box glass-box h-100">
+          <h2 class="title is-5 mb-4">Avance de Entrenamiento</h2>
+          
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Sesiones Completadas</span>
+              <strong>4 de 5 días</strong>
+            </div>
+            <progress class="progress is-link" value="80" max="100">80%</progress>
+          </div>
+
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Volumen de Carga Semanal</span>
+              <strong>12,400 kg total</strong>
+            </div>
+            <progress class="progress is-primary" value="95" max="100">95%</progress>
+          </div>
+
+          <p class="is-size-7 has-text-grey-light mt-4">
+            Último entrenamiento registrado: <strong>Pierna y Core (Ayer)</strong>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Historial de Mediciones (Tabla Bulma) -->
+    <div class="box glass-box">
+      <h2 class="title is-5 mb-4">Historial de Registro Automático</h2>
+      <div class="table-container">
+        <table class="table is-fullwidth">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Peso</th>
+              <th>% Grasa</th>
+              <th>Observaciones de la App</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>14/09/2026</td>
+              <td><span class="tag is-dark">75.2 kg</span></td>
+              <td><span class="tag is-dark">14.5%</span></td>
+              <td>Progreso constante según meta de hipertrofia.</td>
+            </tr>
+            <tr>
+              <td>01/09/2026</td>
+              <td><span class="tag is-dark">74.6 kg</span></td>
+              <td><span class="tag is-dark">14.8%</span></td>
+              <td>Aumento de cargas progresivas completado.</td>
+            </tr>
+            <tr>
+              <td>15/08/2026</td>
+              <td><span class="tag is-dark">74.0 kg</span></td>
+              <td><span class="tag is-dark">15.3%</span></td>
+              <td>Inicio de fase de volumen limpio.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</body>

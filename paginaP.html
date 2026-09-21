@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Principal - Fitness App</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Iconos de FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="general.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+                  url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    /* Estilo Glassmorphism coherente */
+    .glass-box {
+      background: rgba(255, 255, 255, 0.12) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px !important;
+      color: #ffffff !important;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    /* Corrección de interlineado en títulos */
+    .title, .subtitle, strong, th, td, label {
+      color: #ffffff !important;
+    }
+
+    .glass-box .title {
+      line-height: 1.2 !important;
+    }
+
+    .glass-box .subtitle {
+      line-height: 1.2 !important;
+    }
+
+    /* Tarjetas Interactivas de Menú */
+    .menu-card {
+      display: block;
+      cursor: pointer;
+      text-decoration: none !important;
+      height: 100%;
+    }
+
+    .menu-card:hover .glass-box {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.18) !important;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .icon-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      color: #ffffff;
+    }
+
+    /* Grid del Calendario de Actividad */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      text-align: center;
+    }
+
+    .calendar-day-head {
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #a0a0a0;
+      padding-bottom: 5px;
+    }
+
+    .calendar-day {
+      background: rgba(30, 30, 30, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px 4px;
+      font-size: 0.85rem;
+      min-height: 55px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .completed { background-color: #4ade80; box-shadow: 0 0 6px #4ade80; } /* Verde: Rutina Completada */
+    .missed { background-color: #f87171; box-shadow: 0 0 6px #f87171; }    /* Rojo: No completada */
+    .rest { background-color: #9ca3af; }                                   /* Gris: Descanso */
+  </style>
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 960px;">
+
+ <!-- Encabezado Corregido -->
+<div class="box glass-box mb-5">
+  <div class="level is-mobile">
+    <div class="level-left">
+      <!-- Este contenedor flex fuerza a los elementos a ubicarse uno debajo del otro de forma ordenada -->
+      <div class="is-flex is-flex-direction-column">
+        <h1 class="title is-3 mb-2" style="line-height: 1.2;">¡Hola, Usuario! 👋</h1>
+        <p class="subtitle is-6 has-text-grey-light m-0" style="line-height: 1.2;">
+          IMC Calculado: <strong>23.5 (Peso Saludable)</strong>
+        </p>
+      </div>
+    </div>
+    <div class="level-right">
+      <!-- Botón Directo al Perfil de Usuario -->
+      <a href="perfil.html" class="button is-rounded is-light is-outlined">
+        <span class="icon"><i class="fas fa-user"></i></span>
+        <span>Mi Perfil</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+    <!-- Menú Principal de Accesos Rápidos (Botones / Tarjetas) -->
+    <div class="columns is-multiline mb-5">
+      
+      <!-- 1. Ver Mi Rutina (Vinculará la rutina asignada según el IMC calculado por la app/admin) -->
+      <div class="column is-4">
+        <a href="rutina.html" class="menu-card">
+          <div class="box glass-box has-text-centered">
+            <div class="is-flex is-justify-content-center">
+              <div class="icon-circle">
+                <i class="fas fa-dumbbell"></i>
+              </div>
+            </div>
+            <h2 class="title is-5 mb-2">Ver Mi Rutina</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Ejercicios adaptados según tu IMC y valoración inicial.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 2. Ver Mi Plan Nutricional (Vinculará el plan de alimentación asignado según IMC) -->
+      <div class="column is-4">
+        <a href="nutricion.html" class="menu-card">
+          <div class="box glass-box has-text-centered">
+            <div class="is-flex is-justify-content-center">
+              <div class="icon-circle">
+                <i class="fas fa-utensils"></i>
+              </div>
+            </div>
+            <h2 class="title is-5 mb-2">Plan Nutricional</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Guía de macros y comidas calculadas para tu objetivo.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 3. Ver Mi Progreso (Vinculado a la página de progreso automatizada que se actualiza) -->
+      <div class="column is-4">
+        <a href="progreso.html" class="menu-card">
+          <div class="box glass-box has-text-centered">
+            <div class="is-flex is-justify-content-center">
+              <div class="icon-circle">
+                <i class="fas fa-chart-line"></i>
+              </div>
+            </div>
+            <h2 class="title is-5 mb-2">Ver Mi Progreso</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Evolución en tiempo real según las rutinas que vas completando.
+            </p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Módulo de Calendario de Actividad -->
+    <div class="box glass-box">
+      <div class="level is-mobile mb-4">
+        <div class="level-left">
+          <h2 class="title is-5 mb-0">Calendario de Actividad</h2>
+        </div>
+        <div class="level-right">
+          <span class="is-size-7 has-text-grey-light">Septiembre 2026</span>
+        </div>
+      </div>
+
+      <!-- Indicadores de estado -->
+      <div class="is-flex is-justify-content-space-around mb-4 is-size-7">
+        <div><span class="status-dot completed mr-1"></span> Completado</div>
+        <div><span class="status-dot missed mr-1"></span> No realizado</div>
+        <div><span class="status-dot rest mr-1"></span> Descanso</div>
+      </div>
+
+      <!-- Grid Semanal/Mensual del Calendario -->
+      <div class="calendar-grid">
+        <div class="calendar-day-head">LUN</div>
+        <div class="calendar-day-head">MAR</div>
+        <div class="calendar-day-head">MIÉ</div>
+        <div class="calendar-day-head">JUE</div>
+        <div class="calendar-day-head">VIE</div>
+        <div class="calendar-day-head">SÁB</div>
+        <div class="calendar-day-head">DOM</div>
+
+        <!-- Muestra de días con su estado de verificación -->
+        <div class="calendar-day"><span>14</span><span class="status-dot completed"></span></div>
+        <div class="calendar-day"><span>15</span><span class="status-dot completed"></span></div>
+        <div class="calendar-day"><span>16</span><span class="status-dot missed"></span></div>
+        <div class="calendar-day"><span>17</span><span class="status-dot completed"></span></div>
+        <div class="calendar-day"><span>18</span><span class="status-dot completed"></span></div>
+        <div class="calendar-day"><span>19</span><span class="status-dot rest"></span></div>
+        <div class="calendar-day"><span>20</span><span class="status-dot rest"></span></div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- Notificación Flotante Estilo Glassmorphism -->
+  <div id="notificacionExito" class="notification is-success is-light" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); backdrop-filter: blur(10px);">
+    <button class="delete" onclick="document.getElementById('notificacionExito').style.display='none'"></button>
+    <strong>¡Información guardada correctamente!</strong><br>Tu rutina y plan nutricional han sido calculados.
+  </div>
+
+  <script>
+    // Se ejecuta al cargar paginaP.html
+    document.addEventListener('DOMContentLoaded', function() {
+      if (sessionStorage.getItem('infoGuardada') === 'true') {
+        const notif = document.getElementById('notificacionExito');
+        if (notif) {
+          notif.style.display = 'block';
+          
+          // Oculta automáticamente después de 4 segundos
+          setTimeout(function() {
+            notif.style.display = 'none';
+          }, 4000);
+        }
+        // Limpia la bandera para que no reaparezca al recargar la página manualmente
+        sessionStorage.removeItem('infoGuardada');
+      }
+    });
+  </script>
+
+</body>
+</html>

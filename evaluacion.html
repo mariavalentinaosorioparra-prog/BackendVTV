@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valoración Inicial - Fitness</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+                  url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Estilo Glassmorphism */
+    .glass-box {
+      background: rgba(255, 255, 255, 0.12) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px !important;
+      color: #ffffff !important;
+      padding: 35px !important;
+    }
+
+    .title, .subtitle, label {
+      color: #ffffff !important;
+    }
+
+    /* Estilos para inputs oscuros tipo glass */
+    .input, .select select {
+      background-color: rgba(30, 30, 30, 0.65) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+      border-radius: 12px !important;
+    }
+
+    .input::placeholder {
+      color: #a0a0a0 !important;
+    }
+
+    .input:focus, .select select:focus {
+      border-color: rgba(255, 255, 255, 0.6) !important;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .select select option {
+      background-color: #1a1a1a;
+      color: #ffffff;
+    }
+
+    .select::after {
+      border-color: #ffffff !important;
+    }
+
+    /* Botón de acción */
+    .btn-submit {
+      background: rgba(255, 255, 255, 0.25) !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      color: #ffffff !important;
+      border-radius: 50px !important;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background: rgba(255, 255, 255, 0.4) !important;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 600px;">
+
+    <!-- Tarjeta Principal del Formulario -->
+    <div class="box glass-box">
+      
+      <!-- Encabezado -->
+      <div class="has-text-centered mb-5">
+        <h1 class="title is-3 mb-2" style="line-height: 1.2;">Valoración Inicial</h1>
+        <p class="subtitle is-6 has-text-grey-light" style="line-height: 1.2;">
+          Ingresa tus datos para calcular tus requerimientos y estructurar tu plan
+        </p>
+      </div>
+
+      <!-- Formulario de Entrada del Usuario -->
+      <form id="evaluacionForm">
+        
+        <!-- Fecha de Nacimiento -->
+        <div class="field mb-4">
+          <label class="label is-small">FECHA DE NACIMIENTO</label>
+          <div class="control">
+            <input class="input" type="date" required>
+          </div>
+        </div>
+
+        <!-- Peso y Altura -->
+        <div class="columns is-mobile">
+          <div class="column is-6">
+            <div class="field mb-4">
+              <label class="label is-small">PESO (KG)</label>
+              <div class="control">
+                <input class="input" type="number" step="0.1" placeholder="Ej. 70.5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-6">
+            <div class="field mb-4">
+              <label class="label is-small">ALTURA (CM)</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="Ej. 175" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Objetivo Principal -->
+        <div class="field mb-5">
+          <label class="label is-small">OBJETIVO PRINCIPAL</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select required>
+                <option value="" disabled selected>Selecciona tu objetivo...</option>
+                <option value="perder_peso">Perder peso</option>
+                <option value="ganar_peso">Ganar peso</option>
+                <option value="ganar_masa_muscular">Ganar masa muscular</option>
+                <option value="mantener_peso">Mantener peso</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de Envío -->
+        <div class="field mt-5">
+          <div class="control">
+            <button type="submit" class="button btn-submit is-fullwidth is-medium">
+              Generar Mi Rutina y Plan Nutricional
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById('evaluacionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Activa la bandera en la memoria del navegador
+      sessionStorage.setItem('infoGuardada', 'true');
+      
+      // Redirige a la página principal
+      window.location.href = 'paginaP.html'; 
+    });
+  </script>
+
+</body>
+</html>

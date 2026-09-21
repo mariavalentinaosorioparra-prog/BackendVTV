@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banco de Alimentos - Admin</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Iconos FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                  url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    /* Estilo Glassmorphism coincidente */
+    .glass-box {
+      background: rgba(255, 255, 255, 0.12) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px !important;
+      color: #ffffff !important;
+      padding: 30px !important;
+    }
+
+    .title, .subtitle, label, .checkbox {
+      color: #ffffff !important;
+    }
+
+    .glass-box .title {
+      line-height: 1.2 !important;
+      margin-bottom: 0.5rem !important;
+    }
+
+    .glass-box .subtitle {
+      line-height: 1.2 !important;
+      margin-top: 0 !important;
+    }
+
+    /* Estilos de inputs oscuros */
+    .input, .textarea, .select select {
+      background-color: rgba(30, 30, 30, 0.75) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+      border-radius: 12px !important;
+    }
+
+    .input::placeholder, .textarea::placeholder {
+      color: #a0a0a0 !important;
+    }
+
+    .select select option {
+      background-color: #1a1a1a;
+      color: #ffffff;
+    }
+
+    .select::after {
+      border-color: #ffffff !important;
+    }
+
+    /* Modulo contenedor de carga 3D */
+    .media-upload-zone {
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .media-upload-zone:hover {
+      border-color: rgba(255, 255, 255, 0.7);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .media-preview-placeholder {
+      width: 100%;
+      height: 160px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 10px;
+    }
+
+    .btn-submit {
+      background: rgba(255, 255, 255, 0.25) !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      color: #ffffff !important;
+      border-radius: 50px !important;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background: rgba(255, 255, 255, 0.4) !important;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 800px;">
+
+    <div class="box glass-box">
+      <div class="mb-5">
+        <h1 class="title is-3">Banco de Alimentos y Platos (Admin)</h1>
+        <p class="subtitle is-6 has-text-grey-light">
+          Registra platillos para ser asignados según el IMC y objetivo del usuario
+        </p>
+      </div>
+
+      <form action="#" method="POST">
+        <!-- Nombre del plato -->
+        <div class="field mb-4">
+          <label class="label is-small">NOMBRE DEL PLATO / ALIMENTO</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Ej. Pechuga a la plancha con quinoa y aguacate" required>
+          </div>
+        </div>
+
+        <!-- Categoría y Calorías -->
+        <div class="columns">
+          <div class="column is-6">
+            <div class="field mb-4">
+              <label class="label is-small">CATEGORÍA</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select required>
+                    <option value="" disabled selected>Selecciona categoría...</option>
+                    <option value="desayuno">Desayuno</option>
+                    <option value="almuerzo">Almuerzo</option>
+                    <option value="cena">Cena</option>
+                    <option value="snack">Snack / Colación</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-6">
+            <div class="field mb-4">
+              <label class="label is-small">CALORÍAS TOTALES (KCAL)</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="Ej. 550" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Macros -->
+        <div class="columns">
+          <div class="column is-4">
+            <div class="field mb-4">
+              <label class="label is-small">PROTEÍNAS (G)</label>
+              <input class="input" type="number" step="0.1" placeholder="Ej. 40">
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="field mb-4">
+              <label class="label is-small">CARBOHIDRATOS (G)</label>
+              <input class="input" type="number" step="0.1" placeholder="Ej. 50">
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="field mb-4">
+              <label class="label is-small">GRASAS (G)</label>
+              <input class="input" type="number" step="0.1" placeholder="Ej. 15">
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros de Asignación por IMC y Objetivo -->
+        <div class="columns mb-4">
+          <div class="column is-6">
+            <label class="label is-small">APTO PARA IMC</label>
+            <div class="field">
+              <label class="checkbox mr-3"><input type="checkbox"> Bajo peso (<18.5)</label><br>
+              <label class="checkbox mr-3"><input type="checkbox"> Normal (18.5 - 24.9)</label><br>
+              <label class="checkbox mr-3"><input type="checkbox"> Sobrepeso (25 - 29.9)</label><br>
+              <label class="checkbox"><input type="checkbox"> Obesidad (≥30)</label>
+            </div>
+          </div>
+          <div class="column is-6">
+            <label class="label is-small">OBJETIVOS COMPATIBLES</label>
+            <div class="field">
+              <label class="checkbox mr-3"><input type="checkbox"> Perder peso</label><br>
+              <label class="checkbox mr-3"><input type="checkbox"> Ganar peso</label><br>
+              <label class="checkbox mr-3"><input type="checkbox"> Ganar masa muscular</label><br>
+              <label class="checkbox"><input type="checkbox"> Mantener peso</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Espacio Reservado para Carga/Render del Modelo 3D del Plato -->
+        <div class="field mb-5">
+          <label class="label is-small">MODELO / IMAGEN 3D DEL PLATO</label>
+          <div class="media-upload-zone">
+            <i class="fas fa-cube fa-2x mb-2" style="color: #60a5fa;"></i>
+            <p class="is-size-7 has-text-grey-light">Arrastra aquí el archivo 3D (.glb, .gltf, .obj) o imagen con profundidad</p>
+            <div class="file is-centered is-small mt-3">
+              <label class="file-label">
+                <input class="file-input" type="file" name="modelo_3d" accept=".glb,.gltf,.obj,image/*">
+                <span class="file-cta">
+                  <span class="file-icon"><i class="fas fa-upload"></i></span>
+                  <span class="file-label">Cargar Archivo 3D</span>
+                </span>
+              </label>
+            </div>
+            <!-- Previsualización / Placeholder 3D -->
+            <div class="media-preview-placeholder">
+              <i class="fas fa-box-open fa-2x mb-2" style="color: #4b5563;"></i>
+              <span class="is-size-7 has-text-grey">Vista previa del objeto 3D interactivo</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="button btn-submit is-fullwidth">Guardar Plato en el Banco Nutricional</button>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banco de Ejercicios - Admin</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Iconos FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                  url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    /* Estilo Glassmorphism coincidente */
+    .glass-box {
+      background: rgba(255, 255, 255, 0.12) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px !important;
+      color: #ffffff !important;
+      padding: 30px !important;
+    }
+
+    .title, .subtitle, label, .checkbox {
+      color: #ffffff !important;
+    }
+
+    .glass-box .title {
+      line-height: 1.2 !important;
+      margin-bottom: 0.5rem !important;
+    }
+
+    .glass-box .subtitle {
+      line-height: 1.2 !important;
+      margin-top: 0 !important;
+    }
+
+    /* Estilos de inputs oscuros */
+    .input, .textarea, .select select {
+      background-color: rgba(30, 30, 30, 0.75) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+      border-radius: 12px !important;
+    }
+
+    .input::placeholder, .textarea::placeholder {
+      color: #a0a0a0 !important;
+    }
+
+    .select select option {
+      background-color: #1a1a1a;
+      color: #ffffff;
+    }
+
+    .select::after {
+      border-color: #ffffff !important;
+    }
+
+    /* Modulo contenedor de carga de Video */
+    .media-upload-zone {
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .media-upload-zone:hover {
+      border-color: rgba(255, 255, 255, 0.7);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .media-preview-placeholder {
+      width: 100%;
+      height: 160px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 10px;
+    }
+
+    .btn-submit {
+      background: rgba(255, 255, 255, 0.25) !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      color: #ffffff !important;
+      border-radius: 50px !important;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background: rgba(255, 255, 255, 0.4) !important;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 800px;">
+
+    <div class="box glass-box">
+      <div class="mb-5">
+        <h1 class="title is-3">Banco de Ejercicios y Rutinas (Admin)</h1>
+        <p class="subtitle is-6 has-text-grey-light">
+          Registra ejercicios con video explicativo para conformar las rutinas
+        </p>
+      </div>
+
+      <form action="#" method="POST">
+        <!-- Nombre del Ejercicio -->
+        <div class="field mb-4">
+          <label class="label is-small">NOMBRE DEL EJERCICIO</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Ej. Sentadilla Goblet con Mancuerna" required>
+          </div>
+        </div>
+
+        <!-- Grupo Muscular y Parámetros -->
+        <div class="columns">
+          <div class="column is-6">
+            <div class="field mb-4">
+              <label class="label is-small">GRUPO MUSCULAR</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select required>
+                    <option value="" disabled selected>Selecciona grupo...</option>
+                    <option value="pecho">Pecho</option>
+                    <option value="espalda">Espalda</option>
+                    <option value="piernas">Piernas / Cuádriceps</option>
+                    <option value="isquios_gluteo">Isquios y Glúteos</option>
+                    <option value="hombros">Hombros</option>
+                    <option value="brazos">Brazos (Bíceps/Tríceps)</option>
+                    <option value="core">Core / Abdomen</option>
+                    <option value="fullbody">Full Body / Cardio</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-3">
+            <div class="field mb-4">
+              <label class="label is-small">SERIES</label>
+              <input class="input" type="number" placeholder="Ej. 4">
+            </div>
+          </div>
+
+          <div class="column is-3">
+            <div class="field mb-4">
+              <label class="label is-small">REPETICIONES</label>
+              <input class="input" type="text" placeholder="Ej. 10 - 12">
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros de Asignación por IMC e Impacto -->
+        <div class="columns mb-4">
+          <div class="column is-6">
+            <label class="label is-small">COMPATIBILIDAD IMC / IMPACTO</label>
+            <div class="field">
+              <label class="checkbox mr-3"><input type="checkbox"> Bajo Impacto (Apto IMC Alto / Sobrepeso)</label><br>
+              <label class="checkbox mr-3"><input type="checkbox"> Impacto Moderado (IMC Normal)</label><br>
+              <label class="checkbox"><input type="checkbox"> Alto Impacto / Avanzado</label>
+            </div>
+          </div>
+          <div class="column is-6">
+            <label class="label is-small">ENFOQUE DE LA RUTINA</label>
+            <div class="field">
+              <label class="checkbox mr-3"><input type="checkbox"> Perder peso / Quema calórica</label><br>
+              <label class="checkbox mr-3"><input type="checkbox"> Hipertrofia (Ganar masa)</label><br>
+              <label class="checkbox"><input type="checkbox"> Fuerza y Resistencia</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información e Instrucciones -->
+        <div class="field mb-4">
+          <label class="label is-small">INFORMACIÓN Y TÉCNICA DEL EJERCICIO</label>
+          <div class="control">
+            <textarea class="textarea" rows="3" placeholder="Describe los puntos clave de la ejecución, postura, respiración y errores comunes a evitar..."></textarea>
+          </div>
+        </div>
+
+        <!-- Espacio Reservado para Carga de Video Corto del Ejercicio -->
+        <div class="field mb-5">
+          <label class="label is-small">VIDEO CORTO DEMOSTRATIVO (LOOP)</label>
+          <div class="media-upload-zone">
+            <i class="fas fa-file-video fa-2x mb-2" style="color: #4ade80;"></i>
+            <p class="is-size-7 has-text-grey-light">Sube un video corto (MP4 / WebM / GIF) ejecutando la técnica correcta</p>
+            <div class="file is-centered is-small mt-3">
+              <label class="file-label">
+                <input class="file-input" type="file" name="video_ejercicio" accept="video/mp4,video/webm,image/gif">
+                <span class="file-cta">
+                  <span class="file-icon"><i class="fas fa-upload"></i></span>
+                  <span class="file-label">Cargar Video del Ejercicio</span>
+                </span>
+              </label>
+            </div>
+            <!-- Previsualización / Placeholder de Video -->
+            <div class="media-preview-placeholder">
+              <i class="fas fa-play-circle fa-2x mb-2" style="color: #4b5563;"></i>
+              <span class="is-size-7 has-text-grey">Reproductor / Previsualización del video en bucle</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="button btn-submit is-fullwidth">Guardar Ejercicio en el Banco de Rutinas</button>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>
