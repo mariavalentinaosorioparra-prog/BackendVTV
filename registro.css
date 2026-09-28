@@ -1,0 +1,42 @@
+body {
+  min-height: 100vh; /*100% de la vista de la pagina*/
+  margin: 0;    /*Sin margen externa*/
+  display: flex; /*El tipo de pantalla se dejara moldear*/
+  align-items: center; /*Alinea los items emn la mitad*/
+  justify-content: center; /*Alinea los items emn la mitad*/
+  background-image: url(https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920); /*Color del fondo*/
+  background-repeat: no-repeat; /*Evita que la imagen se repita*/
+  background-size: cover; /*Escala la imagen para cubrir todo el contenedor sin deformarse*/
+  background-position: center; /*Centra la imagen en el contenedor*/
+  font-family: Arial, Helvetica, sans-serif; /*La fuente del body*/
+}
+
+.center {
+  width: min(100%, 460px); /*El ancho de la caja sera el minimo entre 100% y 460px*/
+  margin: 0 auto; /*Sin margen externa*/
+  text-align: center; /*El texto se alinea al centro*/
+}
+
+.title {
+  text-align: center; /*El texto se alinea al centro*/
+  margin-bottom: 1rem; /*1 rem significa 1 vez el tamaño de la fuente base del documento, por ejemplo el navegador tendria una de 16px */
+  border-color: black;
+}
+
+.box {
+  width: min(420px, 90vw); /*El ancho de la caja sera el minimo entre 420px y 90% del ancho de la ventana*/
+  margin: 0 auto; /*Sin margen externa*/
+  padding: 1.5rem; /*1.5 * 16 (tamaño de la fuente base) = 24px*/
+  border-radius: 12px; /*El borde sera redondeado*/
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /*Sombra de la caja en X Y Z*/
+}
+
+@media (max-width: 768px) { /*Regla responsive para pantallas de 768px o menos*/
+  .center {
+    width: min(92vw, 460px); /*El ancho del contenedor pasa a ser el minimo entre 92vw y 460px*/
+  }
+
+  .box {
+    width: min(100%, 380px); /*El formulario reduce su ancho a un maximo de 380px*/
+  }
+}
