@@ -6,7 +6,7 @@
   <title>Valoración Inicial - Fitness</title>
   <!-- Framework Bulma CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <link rel="stylesheet" href="evaluacion.css">
+  <link rel="stylesheet" href="../css/evaluacion.css">
 </head>
 <body class="py-6 px-4">
 
@@ -83,20 +83,9 @@
       </form>
 
     </div>
-
   </div>
 
-  <script>
-    document.getElementById('evaluacionForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Activa la bandera en la memoria del navegador
-      sessionStorage.setItem('infoGuardada', 'true');
-      
-      // Redirige a la página principal
-      window.location.href = 'paginaP.html'; 
-    });
-  </script>
-
+<script src="../js/evaluacion.js"></script>
+  
 </body>
 </html>
