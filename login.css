@@ -24,7 +24,7 @@ body {
   border-color: black;
 }
 
-.box {
+.box {  
   width: min(420px, 90vw); /*El ancho de la caja sera el minimo entre 420px y 90% del ancho de la ventana*/
   margin: 0 auto; /*Sin margen externa*/
   padding: 1.5rem; /*1.5 * 16 (tamaño de la fuente base) = 24px*/

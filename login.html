@@ -1,34 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesion</title>
+    <title>Inicio de Sesión</title>
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 </head>
 <body>
   <div class="center">
-    <h1 class="title">Inicio de Sesion</h1>
-    <form class="box">
-  <div class="field">
-    <label class="label">Email</label>
-    <div class="control">
-      <input class="input" type="email" placeholder="Ejemplo@gmail.com" required/>
-    </div>
+    <h1 class="title">Inicio de Sesión</h1>
+    
+    <!-- Agregamos action y method para procesar el formulario -->
+    <form class="box" action="paginaP.html" method="GET">
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <!-- Agregamos name="email" para enviar el valor -->
+          <input class="input" type="email" name="email" placeholder="Ejemplo@gmail.com" required/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Contraseña</label>
+        <div class="control">
+          <!-- Agregamos name="password" para enviar el valor -->
+          <input class="input" type="password" name="password" placeholder="********" required/>
+        </div>
+      </div>
+
+      <!-- Botón submit: Obliga al navegador a validar el required antes de ir a paginaP.html -->
+      <button type="submit" class="button is-primary">Iniciar</button>
+      
+      <!-- Enlace simple: Redirige directamente al registro sin validar datos -->
+      <a href="registro.html" class="button is-light">Registro</a>
+    </form>
   </div>
 
-  <div class="field">
-    <label class="label">Contraseña</label>
-    <div class="control">
-      <input class="input" type="password" placeholder="********" required/>
-    </div>
-  </div>
-
-  <button class="button is-primary">Iniciar</button>
-  <button href="reclass="button is-primary">Registro</button>
-  
-</form>
+  <input type="hidden" id="IMC">
 </body>
 </html>
-<input type="hidden" id="IMC">

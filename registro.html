@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="registro.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+</head>
+<body>
+    <div class="center">
+        <h1 class="title">Registro</h1>
+        
+        <!-- Agregamos action para definir a dónde va tras registrarse -->
+        <!--Metodo post no sirve con el puerto 5500 de live server, se tiene que usar el get-->
+        <form class="box" action="paginaP.html" method="GET">
+
+            <div class="field">
+                <label class="label">Nombre</label>
+                <div class="control">
+                    <input class="input" type="text" name="nombre" placeholder="Tu Nombre" required/>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Apellido</label>
+                <div class="control">
+                    <input class="input" type="text" name="apellido" placeholder="Tu Apellido" required/>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input class="input" type="email" name="email" placeholder="Ejemplo@gmail.com" required/>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Contraseña</label>
+                <div class="control">
+                    <input class="input" type="password" name="password" placeholder="********" required/>
+                </div>
+            </div>
+
+            <!-- Botón Submit: Valida todos los campos required antes de enviar -->
+            <button type="submit" class="button is-primary">Registrarse</button>
+            
+            <!-- Enlace Login: Redirige directamente de vuelta a login.html sin validar -->
+            <a href="login.html" class="button is-light">Login</a>
+
+        </form>
+    </div>
+</body>
+</html>
