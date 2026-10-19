@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - Fitness App</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Iconos de FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="adm.css">
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 960px;">
+
+    <!-- Encabezado -->
+    <div class="box glass-box mb-5">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="is-flex is-flex-direction-column">
+            <h1 class="title is-3 mb-2" style="line-height: 1.2;">
+              ¡Hola, <span id="nombreAdmin">Administrador</span>! 🛠️
+            </h1>
+            <p class="subtitle is-6 has-text-grey-light m-0" style="line-height: 1.2;">
+              Panel de administración · <strong>Gestiona rutinas, planes nutricionales y bancos de contenido</strong>
+            </p>
+          </div>
+        </div>
+        <div class="level-right">
+          <button id="btnCerrarSesion" class="button is-danger is-light is-rounded">
+            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accesos principales del administrador -->
+    <h2 class="title is-5 mb-3">Asignaciones a usuarios</h2>
+    <div class="columns is-multiline mb-4">
+
+      <!-- 1. Asignar rutinas -->
+      <div class="column is-6">
+        <a href="admin_asignar_rutina.html" class="menu-card">
+          <div class="box glass-box has-text-centered p-4">
+            <div class="card-image-container">
+              <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=600" alt="Asignar rutinas">
+            </div>
+            <h2 class="title is-5 mb-2">Asignar Rutinas</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Arma una rutina con ejercicios del banco y asígnala a un usuario.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 2. Asignar planes nutricionales -->
+      <div class="column is-6">
+        <a href="admin_asignar_plan.html" class="menu-card">
+          <div class="box glass-box has-text-centered p-4">
+            <div class="card-image-container">
+              <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=600" alt="Asignar planes nutricionales">
+            </div>
+            <h2 class="title is-5 mb-2">Asignar Planes Nutricionales</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Define calorías, fechas y descripción del plan de cada usuario.
+            </p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <h2 class="title is-5 mb-3">Bancos de contenido</h2>
+    <div class="columns is-multiline mb-5">
+
+      <!-- 3. Banco de ejercicios -->
+      <div class="column is-6">
+        <a href="Ejercicios.html" class="menu-card">
+          <div class="box glass-box has-text-centered p-4">
+            <div class="card-image-container">
+              <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=600" alt="Banco de ejercicios">
+            </div>
+            <h2 class="title is-5 mb-2">Banco de Ejercicios</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Registra ejercicios con su descripción, grupo muscular y video.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 4. Banco de alimentos -->
+      <div class="column is-6">
+        <a href="plan_nutricional.html" class="menu-card">
+          <div class="box glass-box has-text-centered p-4">
+            <div class="card-image-container">
+              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=600" alt="Banco de alimentos">
+            </div>
+            <h2 class="title is-5 mb-2">Banco de Alimentos</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Registra platos con calorías y macros según IMC y objetivo.
+            </p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="adm.js"></script>
+</body>
+</html>
