@@ -1,0 +1,108 @@
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+                  url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    /* Estilo Glassmorphism coherente */
+    .glass-box {
+      background: rgba(255, 255, 255, 0.12) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px !important;
+      color: #ffffff !important;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    /* Corrección de interlineado en títulos */
+    .title, .subtitle, strong, th, td, label {
+      color: #ffffff !important;
+    }
+
+    .glass-box .title {
+      line-height: 1.2 !important;
+    }
+
+    .glass-box .subtitle {
+      line-height: 1.2 !important;
+    }
+
+    /* Tarjetas Interactivas de Menú */
+    .menu-card {
+      display: block;
+      cursor: pointer;
+      text-decoration: none !important;
+      height: 100%;
+    }
+
+    .menu-card:hover .glass-box {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.18) !important;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .icon-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      color: #ffffff;
+    }
+
+    /* Grid del Calendario de Actividad */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      text-align: center;
+    }
+
+    .calendar-day-head {
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #a0a0a0;
+      padding-bottom: 5px;
+    }
+
+    .calendar-day {
+      background: rgba(30, 30, 30, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px 4px;
+      font-size: 0.85rem;
+      min-height: 55px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .completed { background-color: #4ade80; box-shadow: 0 0 6px #4ade80; } /* Verde: Rutina Completada */
+    .missed { background-color: #f87171; box-shadow: 0 0 6px #f87171; }    /* Rojo: No completada */
+    .rest { background-color: #9ca3af; }                                   /* Gris: Descanso */
+
+    .glass-box .title {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.2 !important;
+}
+
+.glass-box .subtitle {
+  margin-top: 0 !important;
+  line-height: 1.2 !important;
+}

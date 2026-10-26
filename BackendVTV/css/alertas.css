@@ -1,0 +1,55 @@
+/* Notificación Flotante Estilo Glassmorphism Fija en Esquina Superior Derecha */
+.custom-toast {
+  position: fixed !important;
+  top: 25px !important;
+  right: 25px !important;
+  z-index: 999999 !important; /* Para que quede por encima de todo */
+  min-width: 300px;
+  max-width: 400px;
+  background: rgba(20, 20, 20, 0.88) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  color: #ffffff !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.custom-toast.toast-danger {
+  border-left: 4px solid #f87171 !important;
+}
+
+.custom-toast.toast-success {
+  border-left: 4px solid #4ade80 !important;
+}
+
+.custom-toast.toast-warning {
+  border-left: 4px solid #facc15 !important;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

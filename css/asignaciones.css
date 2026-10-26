@@ -1,0 +1,42 @@
+body.pagina-asig {
+  min-height: 100vh;
+  background: linear-gradient(rgba(0,0,0,.8), rgba(0,0,0,.8)),
+    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
+.glass-box {
+  background: rgba(255,255,255,.12) !important;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 20px !important;
+  color: #fff !important;
+  padding: 26px !important;
+}
+.title, .subtitle, label, strong { color: #fff !important; }
+.btn-submit {
+  background: rgba(255,255,255,.25) !important; border: 1px solid rgba(255,255,255,.4) !important;
+  color: #fff !important; font-weight: bold;
+}
+.dia-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.dia-tab {
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); color: #fff;
+  border-radius: 50px; padding: 8px 16px; cursor: pointer; font-size: .85rem;
+}
+.dia-tab.activo { background: rgba(74,222,128,.28); border-color: #4ade80; font-weight: bold; }
+.dia-tab:focus-visible, .btn-submit:focus-visible { outline: 2px solid #4ade80; outline-offset: 2px; }
+.ej-card, .comida-card {
+  background: rgba(20,20,20,.45); border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px; padding: 16px 18px; margin-bottom: 12px;
+}
+.ej-card.hecho { border-color: #4ade80; opacity: .75; }
+.ej-card p, .comida-card p { color: #d1d5db; font-size: .9rem; margin-top: 8px; }
+.ej-card .tag, .comida-card .tag { background: rgba(255,255,255,.15); color: #fff; }
+.stat { text-align: center; padding: 14px !important; }
+.stat .num { font-size: 1.6rem; font-weight: 700; }
+.stat .etq { font-size: .75rem; color: #9ca3af; }
+.aviso { border-left: 4px solid #facc15; background: rgba(250,204,21,.12); padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-size: .9rem; }
+.tabla-banco { width: 100%; font-size: .85rem; color: #fff; background: transparent; }
+.tabla-banco th, .tabla-banco td { color: #fff !important; border-color: rgba(255,255,255,.15) !important; background: transparent !important; vertical-align: middle; }
+.lista-scroll { max-height: 420px; overflow-y: auto; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

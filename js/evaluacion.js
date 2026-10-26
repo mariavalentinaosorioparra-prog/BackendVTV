@@ -1,39 +1,57 @@
-    // evaluacion
-
-
-        document.getElementById('evaluacionForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Activa la bandera en la memoria del navegador
-      sessionStorage.setItem('infoGuardada', 'true');
-      
-      // Redirige a la página principal
-      window.location.href = 'paginaP.html'; 
-    });
-    
-
-    document.getElementById('evaluacionForm').addEventListener('submit', function(e) {
+document.getElementById('evaluacionForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  // Obtener valores ingresados en los campos
-  const inputs = this.querySelectorAll('input, select');
-  const fechaNac = inputs[0].value;
-  const peso = inputs[1].value;
-  const altura = inputs[2].value;
-  const objetivo = inputs[3].value;
+  const fechaNac = document.getElementById('fechaNacimiento').value.trim();
+  const peso = parseFloat(document.getElementById('peso').value);
+  const altura = parseFloat(document.getElementById('altura').value);
+  const objetivo = document.getElementById('objetivo').value;
+  const sexo = document.getElementById('sexo').value;
+  const nivel = document.getElementById('nivel').value;
 
-  // Guardar datos en LocalStorage para que los consuma perfil.js y paginaP.js
+  if (!fechaNac) {
+    mostrarAlerta("Por favor, selecciona tu fecha de nacimiento.", "danger");
+    return;
+  }
+
+  if (isNaN(peso) || peso <= 0) {
+    mostrarAlerta("Por favor, ingresa un peso válido en kg.", "danger");
+    return;
+  }
+
+  if (isNaN(altura) || altura <= 50 || altura > 250) {
+    mostrarAlerta("Por favor, ingresa una altura válida en cm.", "danger");
+    return;
+  }
+
+  if (!sexo) {
+    mostrarAlerta("Selecciona tu sexo (se usa para calcular tus calorías).", "danger");
+    return;
+  }
+
+  if (!nivel) {
+    mostrarAlerta("Selecciona tu nivel de entrenamiento.", "danger");
+    return;
+  }
+
+  if (!objetivo) {
+    mostrarAlerta("Por favor, selecciona tu objetivo principal.", "danger");
+    return;
+  }
+
+  // Guardar datos en LocalStorage
   localStorage.setItem('usuarioFechaNac', fechaNac);
   localStorage.setItem('usuarioPeso', peso);
   localStorage.setItem('usuarioAltura', altura);
   localStorage.setItem('usuarioObjetivo', objetivo);
+  localStorage.setItem('usuarioSexo', sexo);
+  localStorage.setItem('usuarioNivel', nivel);
   localStorage.setItem('planAsignado', 'true');
-
-  // Activar bandera para la notificación
+  localStorage.removeItem('rutinaHechos'); // la rutina nueva reinicia el seguimiento
   sessionStorage.setItem('infoGuardada', 'true');
 
-  alert("¡Información guardada correctamente!");
+  mostrarAlerta("¡Evaluación completada con éxito! Redirigiendo...", "success");
 
-  // Redirigir a la página principal
-  window.location.href = 'paginaP.html';
+  setTimeout(function() {
+    window.location.href = 'paginaP.html';
+  }, 1200);
 });
