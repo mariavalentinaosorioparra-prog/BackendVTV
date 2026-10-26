@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <!-- Iconos de FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="adm.css">
+  <link rel="stylesheet" href="../css/adm.css">
 </head>
 <body class="py-6 px-4">
 
@@ -37,19 +37,19 @@
     </div>
 
     <!-- Accesos principales del administrador -->
-    <h2 class="title is-5 mb-3">Asignaciones a usuarios</h2>
+    <h2 class="title is-5 mb-3">Asignación automática por perfil</h2>
     <div class="columns is-multiline mb-4">
 
       <!-- 1. Asignar rutinas -->
       <div class="column is-6">
-        <a href="admin_asignar_rutina.html" class="menu-card">
+        <a href="Rutinas.html" class="menu-card">
           <div class="box glass-box has-text-centered p-4">
             <div class="card-image-container">
               <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=600" alt="Asignar rutinas">
             </div>
-            <h2 class="title is-5 mb-2">Asignar Rutinas</h2>
+            <h2 class="title is-5 mb-2">Rutina asignada</h2>
             <p class="is-size-7 has-text-grey-light">
-              Arma una rutina con ejercicios del banco y asígnala a un usuario.
+              Así se ve la rutina que el sistema arma con el banco según el perfil del usuario.
             </p>
           </div>
         </a>
@@ -57,14 +57,14 @@
 
       <!-- 2. Asignar planes nutricionales -->
       <div class="column is-6">
-        <a href="admin_asignar_plan.html" class="menu-card">
+        <a href="planNasignado.html" class="menu-card">
           <div class="box glass-box has-text-centered p-4">
             <div class="card-image-container">
               <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=600" alt="Asignar planes nutricionales">
             </div>
-            <h2 class="title is-5 mb-2">Asignar Planes Nutricionales</h2>
+            <h2 class="title is-5 mb-2">Plan nutricional asignado</h2>
             <p class="is-size-7 has-text-grey-light">
-              Define calorías, fechas y descripción del plan de cada usuario.
+              Calorías, macros y menú semanal calculados con el banco de alimentos.
             </p>
           </div>
         </a>
@@ -109,7 +109,7 @@
 
   </div>
 
-  <script src="adm.js"></script>
+  <script src="../js/adm.js"></script>
   <script src="../js/alertas.js"></script>
 </body>
 </html>
