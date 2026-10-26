@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi rutina - Fitness App</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="../css/asignaciones.css">
 </head>
-<body>
-   
-  
-<h1> No tienes una rutina asignada todavia</h1>
+<body class="pagina-asig py-6 px-4">
+  <div class="container" style="max-width: 800px;">
+    <div class="box glass-box mb-5">
+      <h1 class="title is-3 mb-2">Mi rutina</h1>
+      <p class="subtitle is-6 has-text-grey-light mb-3">Armada con el banco de ejercicios según tu IMC, nivel y objetivo</p>
+      <div id="resumen" class="tags"></div>
+    </div>
 
-<!-- Botón Volver a Inicio -->
-<div class="mb-4">
-  <a href="paginaP.html" class="button is-light is-outlined is-rounded">
-    <span class="icon"><i class="fas fa-arrow-left"></i></span>
-    <span>Volver al Inicio</span>
-  </a>
-</div>
- 
+    <div id="contenido"></div>
+    <div class="mt-5"><a href="paginaP.html" class="button is-light is-outlined is-rounded">Volver al inicio</a></div>
+  </div>
+  <script src="../js/datos.js"></script>
+  <script src="../js/asignacion.js"></script>
+  <script src="../js/rutinas.js"></script>
 </body>
 </html>

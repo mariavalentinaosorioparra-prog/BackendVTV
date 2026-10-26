@@ -7,7 +7,7 @@
   <!-- Framework Bulma CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <!-- Iconos FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Estilos generales y de alertas -->
   <link rel="stylesheet" href="../css/evaluacion.css">
   <link rel="stylesheet" href="../css/alertas.css">
@@ -41,6 +41,35 @@
         <div class="control">
           <input class="input" id="altura" type="number" placeholder="Ej. 175">
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sexo y nivel de experiencia -->
+  <div class="columns is-mobile">
+    <div class="column is-6">
+      <div class="field mb-4">
+        <label class="label is-small">SEXO</label>
+        <div class="control"><div class="select is-fullwidth">
+          <select id="sexo">
+            <option value="" disabled selected>Selecciona...</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+          </select>
+        </div></div>
+      </div>
+    </div>
+    <div class="column is-6">
+      <div class="field mb-4">
+        <label class="label is-small">NIVEL DE ENTRENAMIENTO</label>
+        <div class="control"><div class="select is-fullwidth">
+          <select id="nivel">
+            <option value="" disabled selected>Selecciona...</option>
+            <option value="principiante">Principiante</option>
+            <option value="intermedio">Intermedio</option>
+            <option value="avanzado">Avanzado</option>
+          </select>
+        </div></div>
       </div>
     </div>
   </div>

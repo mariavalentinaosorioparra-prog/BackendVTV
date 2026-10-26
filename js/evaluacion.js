@@ -5,6 +5,8 @@ document.getElementById('evaluacionForm').addEventListener('submit', function(e)
   const peso = parseFloat(document.getElementById('peso').value);
   const altura = parseFloat(document.getElementById('altura').value);
   const objetivo = document.getElementById('objetivo').value;
+  const sexo = document.getElementById('sexo').value;
+  const nivel = document.getElementById('nivel').value;
 
   // --- 1. VALIDACIÓN DE FECHA DE NACIMIENTO Y EDAD (>= 18 AÑOS) ---
   if (!fechaNacInput) {
@@ -33,6 +35,7 @@ document.getElementById('evaluacionForm').addEventListener('submit', function(e)
     return;
   }
 
+
   // --- 3. VALIDACIÓN DE ALTURA (Estándares mundiales lógicos: 100cm a 250cm) ---
   if (isNaN(altura) || altura < 100 || altura > 250) {
     mostrarAlerta("Por favor, ingresa una altura válida en centímetros (entre 100 cm y 250 cm).", "danger");
@@ -40,6 +43,17 @@ document.getElementById('evaluacionForm').addEventListener('submit', function(e)
   }
 
   // --- 4. VALIDACIÓN DE OBJETIVO ---
+
+  if (!sexo) {
+    mostrarAlerta("Selecciona tu sexo (se usa para calcular tus calorías).", "danger");
+    return;
+  }
+
+  if (!nivel) {
+    mostrarAlerta("Selecciona tu nivel de entrenamiento.", "danger");
+    return;
+  }
+
   if (!objetivo) {
     mostrarAlerta("Por favor, selecciona tu objetivo principal.", "danger");
     return;
@@ -50,7 +64,10 @@ document.getElementById('evaluacionForm').addEventListener('submit', function(e)
   localStorage.setItem('usuarioPeso', peso);
   localStorage.setItem('usuarioAltura', altura);
   localStorage.setItem('usuarioObjetivo', objetivo);
+  localStorage.setItem('usuarioSexo', sexo);
+  localStorage.setItem('usuarioNivel', nivel);
   localStorage.setItem('planAsignado', 'true');
+  localStorage.removeItem('rutinaHechos'); // la rutina nueva reinicia el seguimiento
   sessionStorage.setItem('infoGuardada', 'true');
 
   mostrarAlerta("¡Valoración validada y guardada con éxito!", "success");
