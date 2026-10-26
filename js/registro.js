@@ -27,13 +27,35 @@ document.getElementById('registroForm').addEventListener('submit', function(e) {
     return;
   }
 
+  // Guardar datos básicos en localStorage
   localStorage.setItem('usuarioNombre', nombre);
   localStorage.setItem('usuarioCorreo', correo);
   localStorage.setItem('usuarioPassword', password);
+  localStorage.setItem('usuarioActivo', correo);
+  sessionStorage.setItem('sesionIniciada', 'true');
 
-  mostrarAlerta("¡Registro exitoso! Redirigiendo...", "success");
+  // --- VERIFICAR SI ES ADMINISTRADOR (@fitapp.com) ---
+  const esAdmin = correo.endsWith('@fitapp.com');
+
+  if (esAdmin) {
+    localStorage.setItem('esAdmin', 'true');
+    localStorage.setItem('planAsignado', 'false'); // Los admins no requieren plan ni valoración
+
+    mostrarAlerta("¡Cuenta de Administrador registrada con éxito! Redirigiendo...", "success");
+
+    setTimeout(() => {
+      window.location.href = 'adm.html'; // Directo al panel de gestión
+    }, 1500);
+    return;
+  }
+
+  // --- FLUJO PARA USUARIO NORMAL (CLIENTE) ---
+  localStorage.setItem('esAdmin', 'false');
+  localStorage.setItem('planAsignado', 'false'); // Requerirá valoración inicial
+
+  mostrarAlerta("¡Registro exitoso! Redirigiendo a tu valoración inicial...", "success");
 
   setTimeout(() => {
-    window.location.href = 'evaluacion.html';
+    window.location.href = 'evaluacion.html'; // Los clientes normales sí van a evaluación
   }, 1500);
 });

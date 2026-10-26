@@ -7,8 +7,7 @@
   <!-- Framework Bulma CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <!-- Iconos de FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../css/paginaP.css">
   <link rel="stylesheet" href="../css/alertas.css">
 </head>
@@ -16,34 +15,33 @@
 
   <div class="container" style="max-width: 960px;">
 
- <!-- Encabezado Corregido -->
-<div class="box glass-box mb-5">
-  <div class="level is-mobile">
-    <div class="level-left">
-      <!-- Este contenedor flex fuerza a los elementos a ubicarse uno debajo del otro de forma ordenada -->
-      <div class="is-flex is-flex-direction-column">
-        <h1 class="title is-3 mb-2" style="line-height: 1.2;">¡Hola, Usuario! 👋</h1>
-        <p class="subtitle is-6 has-text-grey-light m-0" style="line-height: 1.2;">
-          IMC Calculado: <strong>23.5 (Peso Saludable)</strong>
-        </p>
+    <!-- Encabezado Dinámico -->
+    <div class="box glass-box mb-5">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="is-flex is-flex-direction-column">
+            <h1 id="saludoUsuario" class="title is-3 mb-2" style="line-height: 1.2;">¡Hola...! 👋</h1>
+            <p id="infoImc" class="subtitle is-6 has-text-grey-light m-0" style="line-height: 1.2;">
+              IMC Calculado: <strong>Calculando...</strong>
+            </p>
+          </div>
+        </div>
+        <div class="level-right">
+          <!-- Botón Directo al Perfil de Usuario -->
+          <a href="perfil.html" class="button is-rounded is-light is-outlined">
+            <span class="icon"><i class="fas fa-user"></i></span>
+            <span>Mi Perfil</span>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="level-right">
-      <!-- Botón Directo al Perfil de Usuario -->
-      <a href="perfil.html" class="button is-rounded is-light is-outlined">
-        <span class="icon"><i class="fas fa-user"></i></span>
-        <span>Mi Perfil</span>
-      </a>
-    </div>
-  </div>
-</div>
 
-    <!-- Menú Principal de Accesos Rápidos (Botones / Tarjetas) -->
+    <!-- Menú Principal de Accesos Rápidos -->
     <div class="columns is-multiline mb-5">
       
-      <!-- 1. Ver Mi Rutina (Vinculará la rutina asignada según el IMC calculado por la app/admin) -->
-<div class="column is-4">
-        <a href="../html/Rutinas.html" onclick="verificarAsignacion('rutina')" class="menu-card">
+      <!-- 1. Ver Mi Rutina -->
+      <div class="column is-4">
+        <a href="javascript:void(0)" onclick="verificarAsignacion('rutina')" class="menu-card">
           <div class="box glass-box has-text-centered p-4">
             <div class="card-image-container">
               <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=600" alt="Ver Mi Rutina">
@@ -56,9 +54,9 @@
         </a>
       </div>
 
-      <!-- 2. Ver Mi Plan Nutricional (Vinculará el plan de alimentación asignado según IMC) -->
-<div class="column is-4">
-        <a href="../html/planNasignado.html" onclick="verificarAsignacion('nutricion')" class="menu-card">
+      <!-- 2. Plan Nutricional -->
+      <div class="column is-4">
+        <a href="javascript:void(0)" onclick="verificarAsignacion('nutricion')" class="menu-card">
           <div class="box glass-box has-text-centered p-4">
             <div class="card-image-container">
               <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=600" alt="Plan Nutricional">
@@ -71,9 +69,9 @@
         </a>
       </div>
 
-      <!-- 3. Ver Mi Progreso (Vinculado a la página de progreso automatizada que se actualiza) -->
-<div class="column is-4">
-        <a href="..//html/Progreso.html" class="menu-card">
+      <!-- 3. Ver Mi Progreso -->
+      <div class="column is-4">
+        <a href="Progreso.html" class="menu-card">
           <div class="box glass-box has-text-centered p-4">
             <div class="card-image-container">
               <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&q=80&w=600" alt="Ver Mi Progreso">
@@ -101,42 +99,59 @@
 
       <!-- Indicadores de estado -->
       <div class="is-flex is-justify-content-space-around mb-4 is-size-7">
-        <div><span class="status-dot completed mr-1"></span> Completado</div>
-        <div><span class="status-dot missed mr-1"></span> No realizado</div>
-        <div><span class="status-dot rest mr-1"></span> Descanso</div>
+        <div><span class="status-dot completed mr-1" style="background:#4ade80; display:inline-block; width:10px; height:10px; border-radius:50%;"></span> Completado</div>
+        <div><span class="status-dot missed mr-1" style="background:#f87171; display:inline-block; width:10px; height:10px; border-radius:50%;"></span> Pendiente</div>
       </div>
 
-      <!-- Grid Semanal/Mensual del Calendario -->
-      <div class="calendar-grid">
-        <div class="calendar-day-head">LUN</div>
-        <div class="calendar-day-head">MAR</div>
-        <div class="calendar-day-head">MIÉ</div>
-        <div class="calendar-day-head">JUE</div>
-        <div class="calendar-day-head">VIE</div>
-        <div class="calendar-day-head">SÁB</div>
-        <div class="calendar-day-head">DOM</div>
-
-        <!-- Muestra de días con su estado de verificación -->
-        <div class="calendar-day"><span>14</span><span class="status-dot completed"></span></div>
-        <div class="calendar-day"><span>15</span><span class="status-dot completed"></span></div>
-        <div class="calendar-day"><span>16</span><span class="status-dot missed"></span></div>
-        <div class="calendar-day"><span>17</span><span class="status-dot completed"></span></div>
-        <div class="calendar-day"><span>18</span><span class="status-dot completed"></span></div>
-        <div class="calendar-day"><span>19</span><span class="status-dot rest"></span></div>
-        <div class="calendar-day"><span>20</span><span class="status-dot rest"></span></div>
+      <!-- Grid Semanal del Calendario -->
+      <div class="columns is-multiline is-mobile" id="calendarioContainer">
+        <div class="column is-3">
+          <div class="box p-3 has-text-centered" id="dia-1" style="background: rgba(255,255,255,0.05); border-radius: 12px; color: #fff;">
+            <p class="is-size-7 has-text-grey-light">DÍA 1</p>
+            <p class="is-size-6 my-1" id="nombre-rutina-1">Tren Superior</p>
+            <span class="tag is-dark is-small" id="estado-dia-1">Pendiente</span>
+          </div>
+        </div>
+        <div class="column is-3">
+          <div class="box p-3 has-text-centered" id="dia-2" style="background: rgba(255,255,255,0.05); border-radius: 12px; color: #fff;">
+            <p class="is-size-7 has-text-grey-light">DÍA 2</p>
+            <p class="is-size-6 my-1" id="nombre-rutina-2">Tren Inferior</p>
+            <span class="tag is-dark is-small" id="estado-dia-2">Pendiente</span>
+          </div>
+        </div>
+        <div class="column is-3">
+          <div class="box p-3 has-text-centered" id="dia-3" style="background: rgba(255,255,255,0.05); border-radius: 12px; color: #fff;">
+            <p class="is-size-7 has-text-grey-light">DÍA 3</p>
+            <p class="is-size-6 my-1" id="nombre-rutina-3">Core / Cardio</p>
+            <span class="tag is-dark is-small" id="estado-dia-3">Pendiente</span>
+          </div>
+        </div>
+        <div class="column is-3">
+          <div class="box p-3 has-text-centered" id="dia-4" style="background: rgba(255,255,255,0.05); border-radius: 12px; color: #fff;">
+            <p class="is-size-7 has-text-grey-light">DÍA 4</p>
+            <p class="is-size-6 my-1" id="nombre-rutina-4">Full Body</p>
+            <span class="tag is-dark is-small" id="estado-dia-4">Pendiente</span>
+          </div>
+        </div>
       </div>
     </div>
 
   </div>
 
-<!-- Notificación Flotante Estilo -->
-  <div id="notificacionExito" class="notification is-success is-light" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); backdrop-filter: blur(10px);">
-    <button class="delete" onclick="document.getElementById('notificacionExito').style.display='none'"></button>
-    <strong>¡Información guardada correctamente!</strong><br>Tu rutina y plan nutricional han sido calculados.
- 
-</div>
+  <!-- Modal / Alerta si no hay plan asignado -->
+  <div id="modalNoAsignado" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head"><p class="modal-card-title">Atención</p></header>
+      <section class="modal-card-body">Debes completar tu valoración inicial primero.</section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" onclick="window.location.href='evaluacion.html'">Ir a Valoración</button>
+      </footer>
+    </div>
+  </div>
 
-  <script src="../js/paginaP.js"></script>
+  <!-- IMPORTANTE: Primero alertas.js y luego paginaP.js -->
   <script src="../js/alertas.js"></script>
+  <script src="../js/paginaP.js"></script>
 </body>
 </html>

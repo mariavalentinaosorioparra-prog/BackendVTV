@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   const inputPassword = document.getElementById('loginPassword');
 
   if (!inputCorreo || !inputPassword) {
-    mostrarAlerta("Error en la estructura del formulario. Revisa los IDs.", "danger");
+    mostrarAlerta("Error en la estructura del formulario.", "danger");
     return;
   }
 
@@ -13,15 +13,9 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   const password = inputPassword.value;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // --- VALIDACIÓN DE CAMPOS VACÍOS Y FORMATO ---
-
-  if (correo === '') {
-    mostrarAlerta("Por favor, ingresa tu correo electrónico.", "danger");
-    return;
-  }
-
-  if (!emailRegex.test(correo)) {
-    mostrarAlerta("Ingresa un correo electrónico válido.", "danger");
+  // Validaciones básicas de campos
+  if (correo === '' || !emailRegex.test(correo)) {
+    mostrarAlerta("Por favor, ingresa un correo electrónico válido.", "danger");
     return;
   }
 
@@ -30,31 +24,62 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     return;
   }
 
-  // --- VERIFICACIÓN DE CREDENCIALES ---
+  // --- 1. VERIFICAR SI ES ADMINISTRADOR (@fitapp.com) ---
+  const esAdmin = correo.endsWith('@fitapp.com');
 
-  const correoGuardado = localStorage.getItem('usuarioCorreo');
-  const passwordGuardada = localStorage.getItem('usuarioPassword');
+  if (esAdmin) {
+    // Si es administrador, permitimos la contraseña genérica 'admin123' o la contraseña que haya registrado
+    const passwordAdminGuardada = localStorage.getItem('usuarioPassword') || 'admin123';
 
-  if (!correoGuardado || !passwordGuardada) {
-    mostrarAlerta("No hay ninguna cuenta registrada. Regístrate primero.", "warning");
+    if (password !== 'admin123' && password !== passwordAdminGuardada) {
+      mostrarAlerta("Contraseña de administrador incorrecta.", "danger");
+      return;
+    }
+
+    localStorage.setItem('esAdmin', 'true');
+    localStorage.setItem('usuarioActivo', correo);
+    sessionStorage.setItem('sesionIniciada', 'true');
+
+    mostrarAlerta("¡Bienvenido, Administrador! Redirigiendo...", "success");
+
     setTimeout(function() {
-      window.location.href = 'registro.html';
-    }, 1800);
+      window.location.href = 'adm.html';
+    }, 1200);
     return;
   }
 
+  // --- 2. RECUPERAR DATOS DEL USUARIO REGISTRADO (CLIENTE NORMAL) ---
+  const correoGuardado = localStorage.getItem('usuarioCorreo');
+  const passwordGuardada = localStorage.getItem('usuarioPassword');
+  const evaluacionRealizada = localStorage.getItem('planAsignado');
+
+  if (!correoGuardado || !passwordGuardada) {
+    mostrarAlerta("No hay ninguna cuenta registrada. Por favor, regístrate primero.", "warning");
+    setTimeout(function() {
+      window.location.href = 'registro.html';
+    }, 2000);
+    return;
+  }
+
+  // Verificar credenciales del usuario normal
   if (correo !== correoGuardado || password !== passwordGuardada) {
     mostrarAlerta("Correo o contraseña incorrectos.", "danger");
     return;
   }
 
-  // --- LOGIN EXITOSO ---
-
+  // --- 3. SESIÓN EXITOSA PARA USUARIO NORMAL ---
+  localStorage.setItem('esAdmin', 'false');
+  localStorage.setItem('usuarioActivo', correo);
   sessionStorage.setItem('sesionIniciada', 'true');
-  mostrarAlerta("¡Bienvenido! Redirigiendo a tu valoración inicial...", "success");
 
-  // Redirección a Valoración Inicial
+  mostrarAlerta("¡Inicio de sesión exitoso! Verificando tu perfil...", "success");
+
+  // --- LÓGICA DE SALTO DE VALORACIÓN ---
   setTimeout(function() {
-    window.location.href = 'evaluacion.html';
+    if (evaluacionRealizada === 'true') {
+      window.location.href = 'paginaP.html';
+    } else {
+      window.location.href = 'evaluacion.html';
+    }
   }, 1200);
 });

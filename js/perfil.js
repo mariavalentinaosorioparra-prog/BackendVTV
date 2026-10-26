@@ -59,13 +59,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // 5. Función de Cerrar Sesión
-  document.getElementById('btnCerrarSesion').addEventListener('click', function() {
-    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-      sessionStorage.clear();
-      window.location.href = 'login.html';
-    }
-  });
+// Listener de Cerrar Sesión con modal personalizado
+document.getElementById('btnCerrarSesion').addEventListener('click', function() {
+  mostrarConfirmacion('¿Estás seguro de que deseas cerrar sesión?', function() {
+    // 1. Limpiar sesión activa
+    sessionStorage.clear();
+    
+    // 2. Mostrar mensaje de confirmación
+    mostrarAlerta("Sesión cerrada correctamente. Redirigiendo...", "info");
 
+    // 3. Redirigir al Login
+    setTimeout(function() {
+      window.location.href = 'login.html';
+    }, 1200);
+  });
 });
+});
+
 
