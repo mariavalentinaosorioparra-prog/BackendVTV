@@ -1,22 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tus Rutinas - Fitness App</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Iconos de FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Alertas globales y CSS exclusivo de rutinas -->
+  <link rel="stylesheet" href="../css/alertas.css">
+  <link rel="stylesheet" href="../css/rutinas.css">
 </head>
-<body>
-   
-  
-<h1> No tienes una rutina asignada todavia</h1>
+<body class="rutinas-page py-6 px-4">
 
-<!-- Botón Volver a Inicio -->
-<div class="mb-4">
-  <a href="paginaP.html" class="button is-light is-outlined is-rounded">
-    <span class="icon"><i class="fas fa-arrow-left"></i></span>
-    <span>Volver al Inicio</span>
-  </a>
-</div>
- 
+  <div class="container" style="max-width: 900px;">
+
+    <!-- Encabezado -->
+    <div class="box glass-box mb-5 p-4">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <h1 class="title is-4 has-text-white mb-0">
+            <i class="fas fa-dumbbell mr-2" style="color: #4ade80;"></i>Tus Rutinas de Entrenamiento
+          </h1>
+        </div>
+        <div class="level-right">
+          <a href="paginaP.html" class="button is-light is-small is-rounded">
+            <span class="icon"><i class="fas fa-arrow-left"></i></span>
+            <span>Volver al inicio</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenedor Dinámico de los Días de Rutina -->
+    <div id="contenedorRutinas" class="columns is-multiline">
+      <!-- Se llenará dinámicamente con JavaScript -->
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/alertas.js"></script>
+  <script src="rutinas.js"></script>
 </body>
 </html>

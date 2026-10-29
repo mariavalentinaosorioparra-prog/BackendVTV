@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asignar Plan Nutricional - Administrador</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/adm.css">
+  <link rel="stylesheet" href="../css/alertas.css">
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 800px;">
+    
+    <div class="box glass-box p-5 mb-5">
+      <h1 class="title is-4 has-text-white has-text-centered mb-2">
+        <i class="fas fa-utensils mr-2" style="color: #4ade80;"></i>Asignar Plan Nutricional
+      </h1>
+      <p class="subtitle is-6 has-text-grey-light has-text-centered">
+        Define calorías y selecciona alimentos del banco para un usuario específico.
+      </p>
+    </div>
+
+    <div class="box glass-box p-5">
+      <form id="formAsignarPlan">
+        
+        <div class="field">
+          <label class="label has-text-white">Correo del Usuario</label>
+          <div class="control has-icons-left">
+            <input class="input" type="email" id="correoPlanUsuario" placeholder="ejemplo@correo.com" required>
+            <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label has-text-white">Calorías Objetivo (Kcal)</label>
+          <div class="control">
+            <input class="input" type="number" id="caloriasObjetivo" placeholder="Ej: 2200" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label has-text-white">Alimentos / Platos del Banco</label>
+          <div id="listaAlimentosBanco" class="box" style="background: rgba(255,255,255,0.03); max-height: 200px; overflow-y: auto;">
+            <p class="has-text-grey-light is-size-7">Cargando alimentos disponibles...</p>
+          </div>
+        </div>
+
+        <div class="field is-grouped mt-5">
+          <div class="control">
+            <button type="submit" class="button is-success">Guardar y Asignar Plan</button>
+          </div>
+          <div class="control">
+            <a href="adm.html" class="button is-light is-outlined">Volver al Panel</a>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <script src="../js/alertas.js"></script>
+  <script src="../js/adm_asignar_plan.js"></script>
+</body>
+</html>
