@@ -13,7 +13,6 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   const password = inputPassword.value;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Validaciones básicas de campos
   if (correo === '' || !emailRegex.test(correo)) {
     mostrarAlerta("Por favor, ingresa un correo electrónico válido.", "danger");
     return;
@@ -24,62 +23,55 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     return;
   }
 
-  // --- 1. VERIFICAR SI ES ADMINISTRADOR (@fitapp.com) ---
-  const esAdmin = correo.endsWith('@fitapp.com');
+  // CAMBIADO: ahora se verifica contra la BD por medio del PHP
+  const datos = new FormData();
+  datos.append('loginCorreo', correo);
+  datos.append('loginPassword', password);
 
-  if (esAdmin) {
-    // Si es administrador, permitimos la contraseña genérica 'admin123' o la contraseña que haya registrado
-    const passwordAdminGuardada = localStorage.getItem('usuarioPassword') || 'admin123';
-
-    if (password !== 'admin123' && password !== passwordAdminGuardada) {
-      mostrarAlerta("Contraseña de administrador incorrecta.", "danger");
+  fetch('../php/login.php', { method: 'POST', body: datos })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.ok) {
+      mostrarAlerta(data.mensaje, "danger");
       return;
     }
 
-    localStorage.setItem('esAdmin', 'true');
-    localStorage.setItem('usuarioActivo', correo);
+    // Datos de la cuenta
+    localStorage.setItem('usuarioNombre', data.nombre);
+    localStorage.setItem('usuarioCorreo', data.correo);
+    localStorage.setItem('usuarioActivo', data.correo);
+    localStorage.setItem('esAdmin', data.es_admin ? 'true' : 'false');
     sessionStorage.setItem('sesionIniciada', 'true');
 
-    mostrarAlerta("¡Bienvenido, Administrador! Redirigiendo...", "success");
-
-    setTimeout(function() {
-      window.location.href = 'adm.html';
-    }, 1200);
-    return;
-  }
-
-  // --- 2. RECUPERAR DATOS DEL USUARIO REGISTRADO (CLIENTE NORMAL) ---
-  const correoGuardado = localStorage.getItem('usuarioCorreo');
-  const passwordGuardada = localStorage.getItem('usuarioPassword');
-  const evaluacionRealizada = localStorage.getItem('planAsignado');
-
-  if (!correoGuardado || !passwordGuardada) {
-    mostrarAlerta("No hay ninguna cuenta registrada. Por favor, regístrate primero.", "warning");
-    setTimeout(function() {
-      window.location.href = 'registro.html';
-    }, 2000);
-    return;
-  }
-
-  // Verificar credenciales del usuario normal
-  if (correo !== correoGuardado || password !== passwordGuardada) {
-    mostrarAlerta("Correo o contraseña incorrectos.", "danger");
-    return;
-  }
-
-  // --- 3. SESIÓN EXITOSA PARA USUARIO NORMAL ---
-  localStorage.setItem('esAdmin', 'false');
-  localStorage.setItem('usuarioActivo', correo);
-  sessionStorage.setItem('sesionIniciada', 'true');
-
-  mostrarAlerta("¡Inicio de sesión exitoso! Verificando tu perfil...", "success");
-
-  // --- LÓGICA DE SALTO DE VALORACIÓN ---
-  setTimeout(function() {
-    if (evaluacionRealizada === 'true') {
-      window.location.href = 'paginaP.html';
-    } else {
-      window.location.href = 'evaluacion.html';
+    // Administrador
+    if (data.es_admin) {
+      mostrarAlerta("¡Bienvenido, Administrador! Redirigiendo...", "success");
+      setTimeout(() => { window.location.href = 'adm.html'; }, 1200);
+      return;
     }
-  }, 1200);
+
+    // Cliente: restaurar su evaluación desde la BD (sirve en cualquier navegador)
+    const ev = data.evaluacion;
+    if (ev) {
+      localStorage.setItem('usuarioFechaNac', ev.fechaNacimiento);
+      localStorage.setItem('usuarioPeso', ev.peso);
+      localStorage.setItem('usuarioAltura', ev.altura);
+      localStorage.setItem('usuarioObjetivo', ev.objetivo);
+      localStorage.setItem('usuarioSexo', ev.sexo || 'masculino');
+      localStorage.setItem('usuarioNivel', ev.nivel || 'principiante');
+      localStorage.setItem('planAsignado', 'true');
+    } else {
+      localStorage.setItem('planAsignado', 'false');
+    }
+
+    mostrarAlerta("¡Inicio de sesión exitoso! Verificando tu perfil...", "success");
+
+    setTimeout(() => {
+      window.location.href = ev ? 'paginaP.html' : 'evaluacion.html';
+    }, 1200);
+  })
+  .catch(err => {
+    console.error('Error al conectar con el PHP:', err);
+    mostrarAlerta("No se pudo conectar con el servidor.", "danger");
+  });
 });

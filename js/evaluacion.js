@@ -16,8 +16,7 @@ document.getElementById('evaluacionForm').addEventListener('submit', function(e)
 
   const hoy = new Date();
   const fechaNacimiento = new Date(fechaNacInput);
-  
-  // Calcular la edad exacta
+
   let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
   const mes = hoy.getMonth() - fechaNacimiento.getMonth();
   if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
@@ -29,21 +28,19 @@ document.getElementById('evaluacionForm').addEventListener('submit', function(e)
     return;
   }
 
-  // --- 2. VALIDACIÓN DE PESO (Estándares mundiales lógicos: 30kg a 300kg) ---
+  // --- 2. VALIDACIÓN DE PESO ---
   if (isNaN(peso) || peso < 30 || peso > 300) {
     mostrarAlerta("Por favor, ingresa un peso válido entre 30 kg y 300 kg.", "danger");
     return;
   }
 
-
-  // --- 3. VALIDACIÓN DE ALTURA (Estándares mundiales lógicos: 100cm a 250cm) ---
+  // --- 3. VALIDACIÓN DE ALTURA ---
   if (isNaN(altura) || altura < 100 || altura > 250) {
     mostrarAlerta("Por favor, ingresa una altura válida en centímetros (entre 100 cm y 250 cm).", "danger");
     return;
   }
 
-  // --- 4. VALIDACIÓN DE OBJETIVO ---
-
+  // --- 4. VALIDACIÓN DE SEXO, NIVEL Y OBJETIVO ---
   if (!sexo) {
     mostrarAlerta("Selecciona tu sexo (se usa para calcular tus calorías).", "danger");
     return;
@@ -59,20 +56,42 @@ document.getElementById('evaluacionForm').addEventListener('submit', function(e)
     return;
   }
 
-  // --- GUARDAR DATOS SI TODO ES CORRECTO ---
-  localStorage.setItem('usuarioFechaNac', fechaNacInput);
-  localStorage.setItem('usuarioPeso', peso);
-  localStorage.setItem('usuarioAltura', altura);
-  localStorage.setItem('usuarioObjetivo', objetivo);
-  localStorage.setItem('usuarioSexo', sexo);
-  localStorage.setItem('usuarioNivel', nivel);
-  localStorage.setItem('planAsignado', 'true');
-  localStorage.removeItem('rutinaHechos'); // la rutina nueva reinicia el seguimiento
-  sessionStorage.setItem('infoGuardada', 'true');
+  // AGREGADO: enviar al PHP
+  const datos = new FormData();
+  datos.append('fechaNacimiento', fechaNacInput);
+  datos.append('peso', peso);
+  datos.append('altura', altura);
+  datos.append('objetivo', objetivo);
+  datos.append('sexo', sexo);
+  datos.append('nivel', nivel);
 
-  mostrarAlerta("¡Valoración validada y guardada con éxito!", "success");
+  fetch('../php/evaluacion.php', { method: 'POST', body: datos })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.ok) {
+      mostrarAlerta(data.mensaje, "danger");
+      return;
+    }
 
-  setTimeout(function() {
-    window.location.href = 'paginaP.html';
-  }, 1200);
+    // --- GUARDAR DATOS SI TODO ES CORRECTO ---
+    localStorage.setItem('usuarioFechaNac', fechaNacInput);
+    localStorage.setItem('usuarioPeso', peso);
+    localStorage.setItem('usuarioAltura', altura);
+    localStorage.setItem('usuarioObjetivo', objetivo);
+    localStorage.setItem('usuarioSexo', sexo);
+    localStorage.setItem('usuarioNivel', nivel);
+    localStorage.setItem('planAsignado', 'true');
+    localStorage.removeItem('rutinaHechos');
+    sessionStorage.setItem('infoGuardada', 'true');
+
+    mostrarAlerta("¡Valoración validada y guardada con éxito!", "success");
+
+    setTimeout(function() {
+      window.location.href = 'paginaP.html';
+    }, 1200);
+  })
+  .catch(err => {
+    console.error('Error al conectar con el PHP:', err);
+    mostrarAlerta("No se pudo conectar con el servidor.", "danger");
+  });
 });

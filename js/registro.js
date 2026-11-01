@@ -4,7 +4,9 @@ document.getElementById('registroForm').addEventListener('submit', function(e) {
   const nombre = document.getElementById('regNombre').value.trim();
   const correo = document.getElementById('regCorreo').value.trim();
   const password = document.getElementById('regPassword').value;
-  const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+  // acepta cualquiera de los dos ids que pueda tener el HTML
+  const campoConfirmar = document.getElementById('regPasswordConfirmar') || document.getElementById('regPasswordConfirm');
+  const passwordConfirm = campoConfirmar.value;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!nombre || nombre.length < 3) {
@@ -27,35 +29,42 @@ document.getElementById('registroForm').addEventListener('submit', function(e) {
     return;
   }
 
-  // Guardar datos básicos en localStorage
-  localStorage.setItem('usuarioNombre', nombre);
-  localStorage.setItem('usuarioCorreo', correo);
-  localStorage.setItem('usuarioPassword', password);
-  localStorage.setItem('usuarioActivo', correo);
-  sessionStorage.setItem('sesionIniciada', 'true');
+  // AGREGADO: enviar al PHP
+  const datos = new FormData();
+  datos.append('regNombre', nombre);
+  datos.append('regCorreo', correo);
+  datos.append('regPassword', password);
+  datos.append('regPasswordConfirmar', passwordConfirm);
 
-  // --- VERIFICAR SI ES ADMINISTRADOR (@fitapp.com) ---
-  const esAdmin = correo.endsWith('@fitapp.com');
+  fetch('../php/registro.php', { method: 'POST', body: datos })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.ok) {
+      mostrarAlerta(data.mensaje, "danger");
+      return;
+    }
 
-  if (esAdmin) {
-    localStorage.setItem('esAdmin', 'true');
-    localStorage.setItem('planAsignado', 'false'); // Los admins no requieren plan ni valoración
+    // Guardar datos básicos en localStorage
+    localStorage.setItem('usuarioNombre', nombre);
+    localStorage.setItem('usuarioCorreo', correo);
+    localStorage.setItem('usuarioActivo', correo);
+    sessionStorage.setItem('sesionIniciada', 'true');
 
-    mostrarAlerta("¡Cuenta de Administrador registrada con éxito! Redirigiendo...", "success");
+    if (data.es_admin) {
+      localStorage.setItem('esAdmin', 'true');
+      localStorage.setItem('planAsignado', 'false');
+      mostrarAlerta("¡Cuenta de Administrador registrada con éxito! Redirigiendo...", "success");
+      setTimeout(() => { window.location.href = 'adm.html'; }, 1500);
+      return;
+    }
 
-    setTimeout(() => {
-      window.location.href = 'adm.html'; // Directo al panel de gestión
-    }, 1500);
-    return;
-  }
-
-  // --- FLUJO PARA USUARIO NORMAL (CLIENTE) ---
-  localStorage.setItem('esAdmin', 'false');
-  localStorage.setItem('planAsignado', 'false'); // Requerirá valoración inicial
-
-  mostrarAlerta("¡Registro exitoso! Redirigiendo a tu valoración inicial...", "success");
-
-  setTimeout(() => {
-    window.location.href = 'evaluacion.html'; // Los clientes normales sí van a evaluación
-  }, 1500);
+    localStorage.setItem('esAdmin', 'false');
+    localStorage.setItem('planAsignado', 'false');
+    mostrarAlerta("¡Registro exitoso! Redirigiendo a tu valoración inicial...", "success");
+    setTimeout(() => { window.location.href = 'evaluacion.html'; }, 1500);
+  })
+  .catch(err => {
+    console.error('Error al conectar con el PHP:', err);
+    mostrarAlerta("No se pudo conectar con el servidor.", "danger");
+  });
 });
