@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Fitness App</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="../css/evaluacion.css">
+  <link rel="stylesheet" href="../css/alertas.css">
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 450px;">
+    <div class="box glass-box">
+      
+      <div class="has-text-centered mb-5">
+        <h1 class="title is-3 mb-2">Bienvenido de nuevo</h1>
+        <p class="subtitle is-6 has-text-grey-light">Ingresa tus credenciales para acceder</p>
+      </div>
+
+      <!-- Formulario con novalidate para delegar la validación a JS -->
+      <form id="loginForm" novalidate>
+        
+        <!-- Correo Electrónico -->
+        <div class="field mb-4">
+          <label class="label is-small">CORREO ELECTRÓNICO</label>
+          <div class="control">
+            <input class="input" id="loginCorreo" type="email" placeholder="ejemplo@correo.com">
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="field mb-5">
+          <label class="label is-small">CONTRASEÑA</label>
+          <div class="control">
+            <input class="input" id="loginPassword" type="password" placeholder="Tu contraseña">
+          </div>
+        </div>
+
+        <!-- Botón de Envío -->
+        <div class="field mt-5">
+          <div class="control">
+            <button type="submit" class="button btn-submit is-fullwidth is-medium">
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+
+        <p class="has-text-centered is-size-7 mt-4">
+          ¿No tienes cuenta? <a href="registro.html" class="has-text-white" style="text-decoration: underline;">Regístrate aquí</a>
+        </p>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script src="../js/login.js"></script>
+  <script src="../js/alertas.js"></script>
+</body>
+</html>

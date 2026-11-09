@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Progreso - Fitness</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/progreso.css">
+  <link rel="stylesheet" href="../css/alertas.css">
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 960px;">
+
+    <!-- Cabecera de Evolución -->
+    <div class="box glass-box mb-5">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="is-flex is-flex-direction-column">
+            <h1 class="title is-4 mb-2" style="line-height: 1.2;">Mi Evolución</h1>
+            <p class="subtitle is-6 has-text-grey-light m-0" style="line-height: 1.2;">
+              Objetivo Activo: <strong id="textoObjetivo">Ganar Masa Muscular</strong>
+            </p>
+          </div>
+        </div>
+        <div class="level-right">
+          <span class="tag is-success is-light is-rounded" id="etiquetaSemana">Semana 1 de 12</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indicadores Automáticos (Métricas Principales) -->
+    <div class="columns is-multiline mb-5">
+      
+      <!-- Peso Actual -->
+      <div class="column is-4">
+        <div class="box glass-box has-text-centered">
+          <p class="heading has-text-grey-light">Peso Actual</p>
+          <p id="txtPesoActual" class="title is-3 my-2">0.0 kg</p>
+          <p class="is-size-7 has-text-success" id="txtCambioPeso">Registrando datos...</p>
+        </div>
+      </div>
+
+      <!-- Calorías Quemadas Totales -->
+      <div class="column is-4">
+        <div class="box glass-box has-text-centered">
+          <p class="heading has-text-grey-light">Calorías Quemadas</p>
+          <p id="txtCaloriasQuemadas" class="title is-3 my-2">0 kcal</p>
+          <p class="is-size-7 has-text-info">Acumulado por ejercicio</p>
+        </div>
+      </div>
+
+      <!-- Adherencia al Plan -->
+      <div class="column is-4">
+        <div class="box glass-box has-text-centered">
+          <p class="heading has-text-grey-light">Adherencia Plan</p>
+          <p id="txtAdherencia" class="title is-3 my-2">0%</p>
+          <p class="is-size-7 has-text-success">Basado en tu actividad</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Paneles de Progreso: Nutrición y Entrenamiento -->
+    <div class="columns mb-5">
+      
+      <!-- Cumplimiento Nutricional -->
+      <div class="column is-6">
+        <div class="box glass-box h-100">
+          <h2 class="title is-5 mb-4">Cumplimiento Nutricional (Hoy)</h2>
+          
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Calorías Consumidas</span>
+              <strong id="txtCaloriasConsumidas">0 / 2,000 kcal</strong>
+            </div>
+            <progress id="progBarCalorias" class="progress is-info" value="0" max="100">0%</progress>
+          </div>
+
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Proteínas</span>
+              <strong id="txtProteinas">0g / 150g</strong>
+            </div>
+            <progress id="progBarProteinas" class="progress is-success" value="0" max="100">0%</progress>
+          </div>
+
+          <div class="mb-2">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Carbohidratos</span>
+              <strong id="txtCarbos">0g / 250g</strong>
+            </div>
+            <progress id="progBarCarbos" class="progress is-warning" value="0" max="100">0%</progress>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avance de Entrenamiento -->
+      <div class="column is-6">
+        <div class="box glass-box h-100">
+          <h2 class="title is-5 mb-4">Avance de Entrenamiento</h2>
+          
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Sesiones Completadas</span>
+              <strong id="txtSesiones">0 de 4 días</strong>
+            </div>
+            <progress id="progBarSesiones" class="progress is-link" value="0" max="100">0%</progress>
+          </div>
+
+          <div class="mb-4">
+            <div class="is-flex is-justify-content-space-between is-size-7 mb-1">
+              <span>Ejercicios completados (semana)</span>
+              <strong id="txtVolumen">0 de 0</strong>
+            </div>
+            <progress id="progBarVolumen" class="progress is-primary" value="0" max="100">0%</progress>
+          </div>
+
+          <p class="is-size-7 has-text-grey-light mt-4">
+            Último registro: <strong id="txtUltimoEntreno">Ninguno registrado aún</strong>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botón Volver -->
+    <div class="mb-4">
+      <a href="paginaP.html" class="button is-light is-outlined is-rounded">
+        <span class="icon"><i class="fas fa-arrow-left"></i></span>
+        <span>Volver al Inicio</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script src="../js/alertas.js"></script>
+  <script src="../js/datos.js"></script>
+  <script src="../js/asignacion.js"></script>
+  <script src="../js/seguimiento.js"></script>
+  <script src="../js/progreso.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+/* =====================================================================
+   Panel de administración - estilo glassmorphism
+   El efecto "vidrio" necesita algo con color detrás para desenfocar,
+   por eso el fondo lleva manchas de luz (orbes) además de la foto.
+   ===================================================================== */
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background: linear-gradient(rgba(5, 8, 18, 0.72), rgba(5, 8, 18, 0.72)),
+              url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+  background-size: cover;
+  color: #ffffff;
+}
+
+/* Orbes de color detrás del contenido: hacen visible el desenfoque del vidrio */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+body::before {
+  width: 420px;
+  height: 420px;
+  top: -80px;
+  left: -100px;
+  background: radial-gradient(circle, #4ade80 0%, rgba(74, 222, 128, 0) 70%);
+}
+
+body::after {
+  width: 480px;
+  height: 480px;
+  bottom: -120px;
+  right: -120px;
+  background: radial-gradient(circle, #38bdf8 0%, rgba(56, 189, 248, 0) 70%);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------------
+   Tarjeta de vidrio
+   --------------------------------------------------------------------- */
+.glass-box {
+  position: relative;
+  background: linear-gradient(135deg,
+              rgba(255, 255, 255, 0.20) 0%,
+              rgba(255, 255, 255, 0.08) 100%) !important;
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-left-color: rgba(255, 255, 255, 0.40);
+  border-radius: 22px !important;
+  color: #ffffff !important;
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+  transition: transform 0.3s ease, background 0.3s ease,
+              border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Reflejo suave en la esquina superior, como luz sobre un cristal */
+.glass-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg,
+              rgba(255, 255, 255, 0.16) 0%,
+              rgba(255, 255, 255, 0) 40%);
+  pointer-events: none;
+}
+
+/* El contenido queda por encima del reflejo */
+.glass-box > * {
+  position: relative;
+}
+
+.title, .subtitle, strong, th, td, label {
+  color: #ffffff !important;
+}
+
+.glass-box .title {
+  line-height: 1.2 !important;
+  margin-bottom: 0.5rem !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.glass-box .subtitle {
+  line-height: 1.2 !important;
+  margin-top: 0 !important;
+}
+
+/* ---------------------------------------------------------------------
+   Tarjetas interactivas del menú
+   --------------------------------------------------------------------- */
+.menu-card {
+  display: block;
+  cursor: pointer;
+  text-decoration: none !important;
+  height: 100%;
+}
+
+.menu-card .glass-box {
+  height: 100%;
+}
+
+.menu-card:hover .glass-box,
+.menu-card:focus-visible .glass-box {
+  transform: translateY(-6px);
+  background: linear-gradient(135deg,
+              rgba(255, 255, 255, 0.28) 0%,
+              rgba(255, 255, 255, 0.12) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(74, 222, 128, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.menu-card:focus-visible {
+  outline: none;
+}
+
+.card-image-container {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 14px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.menu-card:hover .card-image-container img {
+  transform: scale(1.06);
+}
+
+/* ---------------------------------------------------------------------
+   Botón de cerrar sesión con efecto vidrio
+   --------------------------------------------------------------------- */
+#btnCerrarSesion {
+  background: rgba(248, 113, 113, 0.18) !important;
+  border: 1px solid rgba(248, 113, 113, 0.5) !important;
+  color: #fecaca !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+#btnCerrarSesion:hover {
+  background: rgba(248, 113, 113, 0.32) !important;
+  transform: translateY(-1px);
+}
+
+/* Si el navegador no soporta backdrop-filter, usamos un fondo más opaco
+   para que el texto siga siendo legible */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-box {
+    background: rgba(30, 41, 59, 0.88) !important;
+  }
+}
