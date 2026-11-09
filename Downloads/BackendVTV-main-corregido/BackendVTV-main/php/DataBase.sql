@@ -89,7 +89,7 @@ CREATE TABLE plan_nutricional (
     ON DELETE SET NULL
 );
 
-CREATE TABLE progreso (
+CREATE TABLE progreso_diario (
   id_progreso       INT UNSIGNED NOT NULL AUTO_INCREMENT,
   id_usuario        INT UNSIGNED NOT NULL,
   fecha             DATE         NOT NULL,
