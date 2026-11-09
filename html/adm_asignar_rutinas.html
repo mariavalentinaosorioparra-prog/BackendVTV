@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asignar Rutina - Administrador</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/adm.css">
+  <link rel="stylesheet" href="../css/alertas.css">
+  
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 800px;">
+    
+    <div class="box glass-box p-5 mb-5">
+      <h1 class="title is-4 has-text-white has-text-centered mb-2">
+        <i class="fas fa-dumbbell mr-2" style="color: #4ade80;"></i>Asignar Rutina Personalizada
+      </h1>
+      <p class="subtitle is-6 has-text-grey-light has-text-centered">
+        Selecciona los ejercicios del banco guardado y asígnalos a un usuario.
+      </p>
+    </div>
+
+    <div class="box glass-box p-5">
+      <form id="formAsignarRutina">
+        
+        <!-- Datos del Usuario -->
+        <div class="field">
+          <label class="label has-text-white">Correo o Identificador del Usuario</label>
+          <div class="control has-icons-left">
+            <input class="input" type="email" id="correoUsuario" placeholder="ejemplo@correo.com" required>
+            <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+          </div>
+        </div>
+
+        <!-- Selección del Día -->
+        <div class="field">
+          <label class="label has-text-white">Día de la Rutina</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="selectDia" required>
+                <option value="">Selecciona el día...</option>
+                <option value="Día 1">Día 1 (Tren Superior)</option>
+                <option value="Día 2">Día 2 (Tren Inferior)</option>
+                <option value="Día 3">Día 3 (Core / Cardio)</option>
+                <option value="Día 4">Día 4 (Full Body)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Banco de Ejercicios Dinámicos -->
+        <div class="field">
+          <label class="label has-text-white">Seleccionar Ejercicios del Banco</label>
+          <div id="listaEjerciciosBanco" class="box" style="background: rgba(255,255,255,0.03); max-height: 250px; overflow-y: auto;">
+            <p class="has-text-grey-light is-size-7">Cargando ejercicios disponibles...</p>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="field is-grouped mt-5">
+          <div class="control">
+            <button type="submit" class="button is-success">Guardar y Asignar Rutina</button>
+          </div>
+          <div class="control">
+            <a href="adm.html" class="button is-light is-outlined">Volver al Panel</a>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <script src="../js/alertas.js"></script>
+  <script src="../js/adm_asignar_rutina.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Principal - Fitness App</title>
+  <!-- Framework Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Iconos de FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/paginaP.css">
+  <link rel="stylesheet" href="../css/alertas.css">
+</head>
+<body class="py-6 px-4">
+
+  <div class="container" style="max-width: 960px;">
+
+    <!-- Encabezado Dinámico -->
+    <div class="box glass-box mb-5">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="is-flex is-flex-direction-column">
+            <h1 id="saludoUsuario" class="title is-3 mb-2" style="line-height: 1.2;">¡Hola...! 👋</h1>
+            <p id="infoImc" class="subtitle is-6 has-text-grey-light m-0" style="line-height: 1.2;">
+              IMC Calculado: <strong>Calculando...</strong>
+            </p>
+          </div>
+        </div>
+        <div class="level-right">
+          <!-- Botón Directo al Perfil de Usuario -->
+          <a href="perfil.html" class="button is-rounded is-light is-outlined">
+            <span class="icon"><i class="fas fa-user"></i></span>
+            <span>Mi Perfil</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú Principal de Accesos Rápidos -->
+    <div class="columns is-multiline mb-5">
+      
+      <!-- 1. Ver Mi Rutina (Vinculará la rutina asignada según el IMC calculado por la app/admin) -->
+<div class="column is-4">
+        <a href="../html/Rutinas.html" class="menu-card">
+          <div class="box glass-box has-text-centered p-4">
+            <div class="card-image-container">
+              <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=600" alt="Ver Mi Rutina">
+            </div>
+            <h2 class="title is-5 mb-2">Ver Mi Rutina</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Ejercicios adaptados según tu IMC y valoración inicial.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 2. Ver Mi Plan Nutricional (Vinculará el plan de alimentación asignado según IMC) -->
+<div class="column is-4">
+        <a href="../html/planNasignado.html" class="menu-card">
+          <div class="box glass-box has-text-centered p-4">
+            <div class="card-image-container">
+              <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=600" alt="Plan Nutricional">
+            </div>
+            <h2 class="title is-5 mb-2">Plan Nutricional</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Guía de macros y comidas calculadas para tu objetivo.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 3. Ver Mi Progreso (Vinculado a la página de progreso automatizada que se actualiza) -->
+<div class="column is-4">
+        <a href="../html/Progreso.html" class="menu-card">
+          <div class="box glass-box has-text-centered p-4">
+            <div class="card-image-container">
+              <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&q=80&w=600" alt="Ver Mi Progreso">
+            </div>
+            <h2 class="title is-5 mb-2">Ver Mi Progreso</h2>
+            <p class="is-size-7 has-text-grey-light">
+              Evolución en tiempo real según las rutinas completadas.
+            </p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Módulo de Calendario de Actividad -->
+    <div class="box glass-box">
+      <div class="level is-mobile mb-4">
+        <div class="level-left">
+          <h2 class="title is-5 mb-0">Calendario de Actividad</h2>
+        </div>
+        <div class="level-right">
+          <span class="is-size-7 has-text-grey-light" id="rangoSemana"></span>
+        </div>
+      </div>
+
+      <!-- Indicadores de estado -->
+      <div class="is-flex is-justify-content-space-around mb-4 is-size-7">
+        <div><span class="status-dot completed mr-1" style="background:#4ade80; display:inline-block; width:10px; height:10px; border-radius:50%;"></span> Completado</div>
+        <div><span class="status-dot mr-1" style="background:#facc15; display:inline-block; width:10px; height:10px; border-radius:50%;"></span> En progreso</div>
+        <div><span class="status-dot missed mr-1" style="background:#f87171; display:inline-block; width:10px; height:10px; border-radius:50%;"></span> Pendiente</div>
+      </div>
+
+      <!-- Grid Semanal del Calendario (lo arma paginaP.js con la rutina real del usuario) -->
+      <div class="columns is-multiline is-mobile" id="calendarioContainer">
+        <div class="column is-12"><p class="is-size-7 has-text-grey-light">Cargando tu semana...</p></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal / Alerta si no hay plan asignado -->
+  <div id="modalNoAsignado" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head"><p class="modal-card-title">Atención</p></header>
+      <section class="modal-card-body">Debes completar tu valoración inicial primero.</section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" onclick="window.location.href='evaluacion.html'">Ir a Valoración</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- IMPORTANTE: Primero alertas.js y luego paginaP.js -->
+  <script src="../js/alertas.js"></script>
+  <script src="../js/datos.js"></script>
+  <script src="../js/asignacion.js"></script>
+  <script src="../js/seguimiento.js"></script>
+  <script src="../js/paginaP.js"></script>
+</body>
+</html>

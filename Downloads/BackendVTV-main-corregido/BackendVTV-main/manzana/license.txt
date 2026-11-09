@@ -1,0 +1,11 @@
+Model Information:
+* title:	manzana
+* source:	https://sketchfab.com/3d-models/manzana-9b784df8c10c4342998d7595fa6ebe35
+* author:	Juan Carlos Osorio Barrera (https://sketchfab.com/koredesign)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "manzana" (https://sketchfab.com/3d-models/manzana-9b784df8c10c4342998d7595fa6ebe35) by Juan Carlos Osorio Barrera (https://sketchfab.com/koredesign) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
