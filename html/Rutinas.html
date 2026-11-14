@@ -6,6 +6,15 @@
   <title>Mi rutina - Fitness App</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/asignaciones.css">
+  <style>
+    .sug-card { border: 1px solid rgba(255,255,255,.15); border-radius: 12px; padding: 1rem; margin-bottom: .75rem; }
+    .sug-card p { white-space: pre-line; }
+    .sug-respuesta { margin-top: .75rem; padding: .6rem .8rem; border-radius: 8px; background: rgba(34,197,94,.12); white-space: pre-line; }
+    .form-message { margin-top: 1rem; padding: .75rem 1rem; border-radius: 8px; font-size: .9rem; }
+    .form-message.is-ok    { background: rgba(34,197,94,.15);  color: #4ade80; }
+    .form-message.is-error { background: rgba(248,113,113,.15); color: #f87171; }
+    .form-message[hidden]  { display: none; }
+  </style>
 </head>
 <body class="pagina-asig py-6 px-4">
   <div class="container" style="max-width: 800px;">
@@ -16,11 +25,60 @@
     </div>
 
     <div id="contenido"></div>
+
+    <!-- ===== Sugerencias: alergias / discapacidades / lesiones ===== -->
+    <div class="box glass-box mt-5">
+      <h2 class="title is-5 mb-2">¿Alguna lesión o discapacidad?</h2>
+      <p class="is-size-7 has-text-grey-light mb-3">Avísale a tu entrenador para que ajuste tu rutina.</p>
+
+      <form id="formSugerencia" novalidate>
+        <div class="columns mb-0">
+          <div class="column is-6">
+            <div class="select is-fullwidth">
+              <select id="tipo" name="tipo" required>
+                <option value="" disabled selected>¿Qué quieres reportar?</option>
+                <option value="alergia">Alergia o intolerancia alimentaria</option>
+                <option value="discapacidad">Discapacidad</option>
+                <option value="lesion">Lesión</option>
+                <option value="condicion">Condición médica</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="column is-6">
+            <div class="select is-fullwidth">
+              <select id="dirigido_a" name="dirigido_a">
+                <option value="ambos">Entrenador y nutriólogo</option>
+                <option value="entrenador" selected>Solo entrenador</option>
+                <option value="nutriologo">Solo nutriólogo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <textarea class="textarea" id="descripcion" name="descripcion" rows="3" maxlength="1000"
+                  placeholder="Ej. Tengo una lesión en la rodilla derecha y no puedo hacer saltos."></textarea>
+        <p class="help has-text-grey-light has-text-right" id="contador">0 / 1000</p>
+
+        <button type="submit" class="button btn-submit is-fullwidth">Enviar a mi entrenador</button>
+        <div class="form-message" id="msgSugerencia" role="status" hidden></div>
+      </form>
+
+      <details class="mt-4">
+        <summary style="cursor:pointer;">Mis reportes</summary>
+        <div id="listaSugerencias" class="mt-3"><p class="has-text-grey">Cargando…</p></div>
+      </details>
+    </div>
+    <!-- ===== Fin sugerencias ===== -->
+
     <div class="mt-5"><a href="paginaP.html" class="button is-light is-outlined is-rounded">Volver al inicio</a></div>
   </div>
-  <script src="../js/datos.js"></script>
-  <script src="../js/asignacion.js"></script>
-  <script src="../js/seguimiento.js"></script>
-  <script src="../js/rutinas.js"></script>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/datos.js?v=2"></script>
+  <script src="../js/asignacion.js?v=3"></script>
+  <script src="../js/seguimiento.js?v=4"></script>
+  <script src="../js/rutinas.js?v=2"></script>
+  
 </body>
 </html>

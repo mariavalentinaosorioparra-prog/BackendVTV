@@ -12,6 +12,14 @@
     let actual = hoy;
     let hechas = Seguimiento.leerComidas();
 
+    // NUEVO: completa el modelo 3D de cada comida buscando el plato por nombre en el banco
+    // (sirve para planes guardados antes o asignados por el admin, que no traen modelo3d)
+    const modelos = {};
+    getAlimentos().forEach(a => { if (a.modelo3d) modelos[a.nombre] = a.modelo3d; });
+    plan.dias.forEach(d => d.comidas.forEach(m => {
+      if (!m.modelo3d && modelos[m.nombre]) m.modelo3d = modelos[m.nombre];
+    }));
+
     document.getElementById('resumen').innerHTML =
       '<span class="tag is-success is-light is-rounded">' + esc(OBJ_TXT[plan.objetivo] || plan.objetivo) + '</span> ' +
       '<span class="tag is-info is-light is-rounded">IMC ' + p.imc.toFixed(1) + ' · ' + IMC_TXT[p.catIMC] + '</span>';
@@ -33,6 +41,7 @@
         return '<div class="comida-card' + (ok ? ' hecho' : '') + '"><div class="level is-mobile mb-1"><strong>' + NOMBRE_COMIDA[m.categoria] + '</strong>' +
           '<span class="tag is-rounded">' + m.kcal + ' kcal</span></div>' +
           '<div>' + esc(m.nombre) + '</div>' +
+          htmlModelo3d(m) +   // NUEVO: visor 3D o imagen del plato
           '<p>Porción ' + m.porcion + '× · P ' + m.p + ' g · C ' + m.c + ' g · G ' + m.g + ' g</p>' +
           '<label class="checkbox mt-2"' + (esHoy ? '' : ' title="Solo puedes marcar las comidas de hoy"') + '><input type="checkbox" data-m="' + idx + '"' +
           (ok ? ' checked' : '') + (esHoy ? '' : ' disabled') + '> ' + (ok ? 'Comida registrada' : 'Ya la comí') + '</label></div>';

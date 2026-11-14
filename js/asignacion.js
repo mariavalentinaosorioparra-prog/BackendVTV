@@ -102,7 +102,8 @@ function generarRutina(p) {
         ejercicios.push({
           id: e.id, nombre: e.nombre, grupo: e.grupo, reps: e.reps, tecnica: e.tecnica,
           series: p.nivel === 'principiante' ? Math.min(Number(e.series) || 3, 3) : (Number(e.series) || 3),
-          descanso: cardio ? 0 : descanso
+          descanso: cardio ? 0 : descanso,
+          video: e.video || ''   // NUEVO: ruta del GIF / video del ejercicio
         });
       });
     });
@@ -152,11 +153,47 @@ function generarPlan(p) {
       const f = Math.min(1.5, Math.max(0.75, Math.round(meta / a.kcal / 0.05) * 0.05));
       return {
         categoria: cat, nombre: a.nombre, porcion: Math.round(f * 100) / 100,
-        kcal: Math.round(a.kcal * f), p: Math.round(a.p * f), c: Math.round(a.c * f), g: Math.round(a.g * f)
+        kcal: Math.round(a.kcal * f), p: Math.round(a.p * f), c: Math.round(a.c * f), g: Math.round(a.g * f),
+        modelo3d: a.modelo3d || ''   // NUEVO: ruta del archivo 3D / imagen del plato
       };
     }).filter(Boolean);
     const total = comidas.reduce((t, m) => ({ kcal: t.kcal + m.kcal, p: t.p + m.p, c: t.c + m.c, g: t.g + m.g }), { kcal: 0, p: 0, c: 0, g: 0 });
     return { nombre, comidas, total };
   });
   return { kcal, prot, carb, gras, aviso, objetivo: obj, dias };
+}
+
+/* ---------------- MODELO 3D DEL PLATO ---------------- */
+
+// HTML del visor 3D (o imagen) de una comida; vacío si no tiene archivo
+function htmlModelo3d(m) {
+  if (!m || !m.modelo3d) return '';
+  const ruta = '../' + m.modelo3d;   // la ruta se guarda como uploads/... y las páginas están en html/
+  const ext = m.modelo3d.split('.').pop().toLowerCase();
+  if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext)) {
+    return '<img src="' + esc(ruta) + '" alt="' + esc(m.nombre) + '" ' +
+      'style="width:100%;max-height:220px;object-fit:contain;border-radius:8px;margin:.5rem 0;">';
+  }
+  if (ext === 'glb') {
+    return '<model-viewer src="' + esc(ruta) + '" alt="' + esc(m.nombre) + '" camera-controls auto-rotate ' +
+      'style="width:100%;height:220px;border-radius:8px;margin:.5rem 0;"></model-viewer>';
+  }
+  return '';
+}
+
+/* ---------------- GIF / VIDEO DEL EJERCICIO ---------------- */
+
+// HTML del GIF o video de un ejercicio; vacío si no tiene archivo
+function htmlVideo(e) {
+  if (!e || !e.video) return '';
+  const ruta = '../' + e.video;   // la ruta se guarda como uploads/... y las páginas están en html/
+  const ext = e.video.split('.').pop().toLowerCase();
+  const estilo = 'width:100%;max-height:260px;object-fit:contain;border-radius:8px;margin:.5rem 0;';
+  if (['gif', 'png', 'jpg', 'jpeg', 'webp'].includes(ext)) {
+    return '<img src="' + esc(ruta) + '" alt="' + esc(e.nombre) + '" loading="lazy" style="' + estilo + '">';
+  }
+  if (['mp4', 'webm', 'ogg', 'mov'].includes(ext)) {
+    return '<video src="' + esc(ruta) + '" autoplay loop muted playsinline style="' + estilo + '"></video>';
+  }
+  return '';
 }

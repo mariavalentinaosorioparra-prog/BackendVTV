@@ -53,3 +53,9 @@
     transform: translateX(100%);
   }
 }
+
+@media (max-width: 480px) {
+  /* Notificaciones: ocupan el ancho del celular */
+  .custom-toast { left: 12px !important; right: 12px !important; top: 12px !important; min-width: 0; max-width: none; }
+  #customConfirmModal .modal-card { width: auto; }
+}

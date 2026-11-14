@@ -101,3 +101,17 @@ CREATE TABLE progreso (
     FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)
     ON DELETE CASCADE
 ) 
+
+CREATE TABLE sugerencias (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  tipo ENUM('alergia','discapacidad','lesion','condicion','otro') NOT NULL,
+  dirigido_a ENUM('entrenador','nutriologo','ambos') NOT NULL DEFAULT 'ambos',
+  descripcion TEXT NOT NULL,
+  estado ENUM('pendiente','revisado') NOT NULL DEFAULT 'pendiente',
+  respuesta TEXT NULL,
+  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  fecha_respuesta DATETIME NULL,
+  INDEX idx_usuario (id_usuario),
+  INDEX idx_estado (estado)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

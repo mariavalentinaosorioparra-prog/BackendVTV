@@ -8,6 +8,10 @@
    dos cuentas en el mismo navegador ya no se mezclan. Las marcas de la semana se
    reinician cada lunes; el historial de calorías se conserva.
 
+   NUEVO: cada cambio también se guarda en la BD (tabla progreso_diario, vía
+   php/seguimiento.php), y al abrir la app en otro navegador el historial se
+   recupera desde la BD.
+
    Requiere cargar antes datos.js y asignacion.js.
    ============================================================ */
 const Seguimiento = (function () {
@@ -73,35 +77,139 @@ const Seguimiento = (function () {
     return Math.max(1, Math.round(met * peso * minutos / 60));
   }
 
+  /* ---------- sincronización con la BD (tabla progreso_diario) ---------- */
+  const URL_SEG = '../php/seguimiento.php';
+  const fechaHora = ts => {
+    const d = new Date(ts);
+    return iso(d) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+  };
+
+  // Envía a la BD el resumen completo de un día (crea o actualiza la fila de esa fecha)
+  function sincronizar(fecha) {
+    const h = historial()[fecha] || { q: 0, c: 0, p: 0, cb: 0, g: 0 };
+    const hechos = leerHechos(), comidas = leerComidas();
+    const metas = leer('metas', {});
+    const diasRutina = leer('rutinaDias', []);           // ids de ejercicios de cada día de la rutina
+
+    // Ejercicios marcados en esta fecha y días de rutina que se trabajaron
+    const clavesDia = Object.keys(hechos).filter(k => hechos[k].fecha === fecha);
+    const diasTocados = [...new Set(clavesDia.map(k => Number(k.split(':')[0])))];
+    const totales = diasTocados.reduce((t, i) => t + ((diasRutina[i] || []).length), 0);
+    const sesion = diasTocados.some(i => (diasRutina[i] || []).length &&
+      diasRutina[i].every(id => hechos[i + ':' + id])) ? 1 : 0;
+
+    const comidasDia = Object.values(comidas).filter(m => m.fecha === fecha).length;
+    const u = leer('ultimo', null);
+    const ultimoEsDeHoy = u && iso(new Date(u.ts)) === fecha;
+
+    const d = new FormData();
+    d.append('accion', 'guardar');
+    d.append('fecha', fecha);
+    d.append('peso', parseFloat(localStorage.getItem('usuarioPeso')) || 0);
+    d.append('calorias_quemadas', h.q || 0);
+    d.append('calorias_consumidas', h.c || 0);
+    d.append('proteinas_consumidas', h.p || 0);
+    d.append('carbohidratos_consumidos', h.cb || 0);
+    d.append('grasas_consumidas', h.g || 0);
+    d.append('comidas_registradas', comidasDia);
+    d.append('meta_calorias', metas.kcal || 0);
+    d.append('meta_proteinas', metas.prot || 0);
+    d.append('meta_carbohidratos', metas.carb || 0);
+    d.append('ejercicios_completados', clavesDia.length);
+    d.append('ejercicios_totales', totales);
+    d.append('sesion_completada', sesion);
+    if (ultimoEsDeHoy) {
+      d.append('ultimo_registro', fechaHora(u.ts));
+      d.append('ultima_actividad', u.nombre || '');
+    }
+
+    return fetch(URL_SEG, { method: 'POST', body: d, keepalive: true })
+      .then(r => r.json())
+      .then(res => { if (!res.ok) console.warn('Progreso no guardado en la BD:', res.mensaje); })
+      .catch(err => console.warn('Progreso no guardado en la BD:', err));
+  }
+
+  // Trae el historial de la BD (una sola vez por página). Completa lo que falte en este
+  // navegador y sube a la BD los días que solo existen aquí.
+  let restaurando = null;
+  function restaurarDesdeBD() {
+    if (restaurando) return restaurando;
+    restaurando = fetch(URL_SEG + '?accion=listar')
+      .then(r => r.json())
+      .then(d => {
+        if (!d || !d.ok) return;
+        const filas = d.dias || [];
+        const h = historial();
+        const enBD = new Set(filas.map(f => f.fecha));
+        let cambio = false;
+
+        filas.forEach(f => {
+          if (!h[f.fecha]) {
+            h[f.fecha] = {
+              q: Number(f.calorias_quemadas) || 0, c: Number(f.calorias_consumidas) || 0,
+              p: Number(f.proteinas_consumidas) || 0, cb: Number(f.carbohidratos_consumidos) || 0,
+              g: Number(f.grasas_consumidas) || 0
+            };
+            cambio = true;
+          }
+        });
+        if (cambio) guardar('historial', h);
+
+        // Último registro
+        if (!leer('ultimo', null)) {
+          const u = filas.filter(f => f.ultimo_registro).pop();
+          if (u) guardar('ultimo', { ts: new Date(u.ultimo_registro.replace(' ', 'T')).getTime(), nombre: u.ultima_actividad || '' });
+        }
+
+        // Semana de inicio (para "Semana X de 12")
+        if (filas.length) {
+          const lun = iso(lunesDe(filas[0].fecha + 'T00:00:00'));
+          if (lun < leer('inicio', lun)) guardar('inicio', lun);
+        }
+
+        // Días que solo están en este navegador -> se suben a la BD
+        Object.keys(h).filter(f => !enBD.has(f)).forEach(sincronizar);
+      })
+      .catch(() => { /* sin servidor: se sigue trabajando solo con localStorage */ });
+    return restaurando;
+  }
+  restaurarDesdeBD();
+
   /* ---------- marcar ejercicios y comidas ---------- */
   const leerHechos = () => leer('rutinaHechos', {});
   const leerComidas = () => leer('comidasHechas', {});
 
   function marcarEjercicio(dia, ejercicio, hecho, peso) {
     const hechos = leerHechos(), k = dia + ':' + ejercicio.id;
+    let fecha = hoyISO();
     if (hecho && !hechos[k]) {
       const kcal = kcalEjercicio(ejercicio, peso);
-      hechos[k] = { kcal, fecha: hoyISO() };
-      ajustar(hoyISO(), { q: kcal }, 1);
+      hechos[k] = { kcal, fecha };
+      ajustar(fecha, { q: kcal }, 1);
       guardar('ultimo', { ts: Date.now(), nombre: ejercicio.nombre });
     } else if (!hecho && hechos[k]) {
-      ajustar(hechos[k].fecha, { q: hechos[k].kcal }, -1);      // se descuenta del día en que se sumó
+      fecha = hechos[k].fecha;                                  // se descuenta del día en que se sumó
+      ajustar(fecha, { q: hechos[k].kcal }, -1);
       delete hechos[k];
     }
     guardar('rutinaHechos', hechos);
+    sincronizar(fecha);
   }
 
   function marcarComida(nombreDia, comida, hecho) {
     const hechas = leerComidas(), k = nombreDia + ':' + comida.categoria;
+    let fecha = hoyISO();
     if (hecho && !hechas[k]) {
-      hechas[k] = { kcal: comida.kcal, p: comida.p, cb: comida.c, g: comida.g, fecha: hoyISO() };
-      ajustar(hoyISO(), { c: comida.kcal, p: comida.p, cb: comida.c, g: comida.g }, 1);
+      hechas[k] = { kcal: comida.kcal, p: comida.p, cb: comida.c, g: comida.g, fecha };
+      ajustar(fecha, { c: comida.kcal, p: comida.p, cb: comida.c, g: comida.g }, 1);
     } else if (!hecho && hechas[k]) {
       const h = hechas[k];
-      ajustar(h.fecha, { c: h.kcal, p: h.p, cb: h.cb, g: h.g }, -1);
+      fecha = h.fecha;
+      ajustar(fecha, { c: h.kcal, p: h.p, cb: h.cb, g: h.g }, -1);
       delete hechas[k];
     }
     guardar('comidasHechas', hechas);
+    sincronizar(fecha);
   }
 
   /* ---------- estado del calendario ---------- */
@@ -154,9 +262,11 @@ const Seguimiento = (function () {
 
   /* ---------- rutina y plan del usuario (la del admin tiene prioridad) ---------- */
   function pedirAsignaciones() {
-    return fetch('../php/asignaciones.php?accion=mias')
+    const asig = fetch('../php/asignaciones.php?accion=mias')
       .then(r => r.json())
       .catch(() => ({ ok: false }));
+    // Espera también a que se recupere el historial de la BD
+    return Promise.all([asig, restaurarDesdeBD()]).then(([d]) => d);
   }
 
   function obtenerRutina(p) {
@@ -170,12 +280,15 @@ const Seguimiento = (function () {
               nombre: 'Rutina asignada',
               ejercicios: JSON.parse(a.contenido).map(e => ({
                 id: e.id, nombre: e.nombre, grupo: e.grupo, reps: e.reps, tecnica: e.tecnica,
-                series: Number(e.series) || 3, descanso: Number(e.series) > 1 ? 75 : 0
+                series: Number(e.series) || 3, descanso: Number(e.series) > 1 ? 75 : 0,
+                video: e.video || ''
               }))
             }));
           } catch (err) { /* contenido dañado: se queda la rutina automática */ }
         }
       }
+      // Se guarda la estructura de la rutina para calcular sesiones completadas en la BD
+      guardar('rutinaDias', r.dias.map(x => x.ejercicios.map(e => e.id)));
       return r;
     });
   }
@@ -194,7 +307,7 @@ const Seguimiento = (function () {
                 const c = platos.filter(a => a.categoria === m.categoria);
                 if (!c.length) return m;           // sin platos asignados de esa comida: se deja el automático
                 const a = c[i % c.length];
-                return { categoria: m.categoria, nombre: a.nombre, porcion: 1, kcal: a.kcal, p: a.p, c: a.c, g: a.g };
+                return { categoria: m.categoria, nombre: a.nombre, porcion: 1, kcal: a.kcal, p: a.p, c: a.c, g: a.g, modelo3d: a.modelo3d || '' };
               });
               dia.total = dia.comidas.reduce((t, m) => ({ kcal: t.kcal + m.kcal, p: t.p + m.p, c: t.c + m.c, g: t.g + m.g }), { kcal: 0, p: 0, c: 0, g: 0 });
             });
@@ -202,6 +315,8 @@ const Seguimiento = (function () {
           } catch (err) { /* contenido dañado: se queda el plan automático */ }
         }
       }
+      // Se guardan las metas del plan para registrarlas en la BD
+      guardar('metas', { kcal: plan.kcal, prot: plan.prot, carb: plan.carb });
       return plan;
     });
   }
@@ -211,6 +326,162 @@ const Seguimiento = (function () {
     leerHechos, leerComidas, marcarEjercicio, marcarComida, kcalEjercicio,
     deHoy, totalQuemadas, estadoDias, adherencia,
     textoSemana, numeroSemana, textoUltimo,
-    obtenerRutina, obtenerPlan
+    obtenerRutina, obtenerPlan,
+    sincronizar, listo: restaurarDesdeBD
   };
+})();
+
+
+/* ============================================================
+   CAJÓN DE SUGERENCIAS (usuario) — Rutinas.html y planNasignado.html
+   ============================================================ */
+(function () {
+  const form = document.getElementById('formSugerencia');
+  if (!form) return;   // la página no tiene el cajón de sugerencias
+
+  const URL_SUG = '../php/sugerencias.php';
+  const MIN = 5, MAX = 1000;
+  const TIPOS = ['alergia', 'discapacidad', 'lesion', 'condicion', 'otro'];
+  const DESTINOS = ['entrenador', 'nutriologo', 'ambos'];
+  const TIPO_TXT = { alergia: 'Alergia / intolerancia', discapacidad: 'Discapacidad', lesion: 'Lesión', condicion: 'Condición médica', otro: 'Otro' };
+  const DEST_TXT = { entrenador: 'Entrenador', nutriologo: 'Nutriólogo', ambos: 'Entrenador y nutriólogo' };
+
+  const tipo = document.getElementById('tipo');
+  const dirigido = document.getElementById('dirigido_a');
+  const desc = document.getElementById('descripcion');
+  const contador = document.getElementById('contador');
+  const msg = document.getElementById('msgSugerencia');
+  const lista = document.getElementById('listaSugerencias');
+  const boton = form.querySelector('button[type="submit"]');
+
+  const escS = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function mensaje(texto, ok) {
+    if (!msg) return;
+    msg.textContent = texto;
+    msg.className = 'form-message ' + (ok ? 'is-ok' : 'is-error');
+    msg.hidden = false;
+  }
+
+  function marcarError(campo, hayError) {
+    const caja = campo.closest('.select') || campo;
+    caja.classList.toggle('is-danger', hayError);
+    campo.setAttribute('aria-invalid', hayError ? 'true' : 'false');
+  }
+
+  function actualizarContador() {
+    if (!contador) return;
+    const n = desc.value.trim().length;
+    contador.textContent = desc.value.length + ' / ' + MAX;
+    contador.classList.toggle('has-text-danger', n > 0 && n < MIN);
+  }
+
+  // Validación: ningún bloque puede quedar vacío
+  function validar() {
+    const errores = [];
+    const texto = desc.value.trim();
+
+    const tipoOk = TIPOS.includes(tipo.value);
+    marcarError(tipo, !tipoOk);
+    if (!tipoOk) errores.push('Selecciona qué quieres reportar.');
+
+    const destOk = DESTINOS.includes(dirigido.value);
+    marcarError(dirigido, !destOk);
+    if (!destOk) errores.push('Selecciona a quién va dirigido.');
+
+    const descOk = texto.length >= MIN && texto.length <= MAX;
+    marcarError(desc, !descOk);
+    if (!texto) errores.push('La descripción no puede quedar vacía.');
+    else if (texto.length < MIN) errores.push('La descripción debe tener al menos ' + MIN + ' caracteres.');
+    else if (texto.length > MAX) errores.push('La descripción no puede pasar de ' + MAX + ' caracteres.');
+
+    return errores;
+  }
+
+  tipo.addEventListener('change', () => { if (tipo.value) marcarError(tipo, false); });
+  dirigido.addEventListener('change', () => { if (dirigido.value) marcarError(dirigido, false); });
+  desc.addEventListener('input', () => {
+    actualizarContador();
+    if (desc.value.trim().length >= MIN) marcarError(desc, false);
+  });
+  actualizarContador();
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (msg) msg.hidden = true;
+
+    const errores = validar();
+    if (errores.length) {
+      mensaje(errores.join(' '), false);
+      const primero = form.querySelector('[aria-invalid="true"]');
+      if (primero) primero.focus();
+      return;
+    }
+
+    const fd = new FormData();
+    fd.append('accion', 'crear');
+    fd.append('tipo', tipo.value);
+    fd.append('dirigido_a', dirigido.value);
+    fd.append('descripcion', desc.value.trim());
+
+    boton.disabled = true;
+    boton.classList.add('is-loading');
+    try {
+      const r = await llamarAPI(URL_SUG, { method: 'POST', body: fd });
+      mensaje(r.mensaje || (r.ok ? 'Enviado.' : 'No se pudo enviar.'), r.ok);
+      if (r.ok) {
+        form.reset();
+        actualizarContador();
+        cargarMias();
+      }
+    } catch (err) {
+      mensaje(err.message, false);
+    } finally {
+      boton.disabled = false;
+      boton.classList.remove('is-loading');
+    }
+  });
+
+  // "Mis reportes" con la respuesta del admin
+  async function cargarMias() {
+    if (!lista) return;
+    try {
+      const r = await llamarAPI(URL_SUG + '?accion=mias');
+      if (!r.ok) { lista.innerHTML = '<p class="has-text-grey">' + escS(r.mensaje) + '</p>'; return; }
+      if (!r.sugerencias.length) { lista.innerHTML = '<p class="has-text-grey">Aún no has enviado reportes.</p>'; return; }
+      lista.innerHTML = r.sugerencias.map(s => {
+        const revisado = s.estado === 'revisado';
+        return '<div class="sug-card">' +
+          '<div class="tags mb-2">' +
+            '<span class="tag is-rounded">' + escS(TIPO_TXT[s.tipo] || s.tipo) + '</span>' +
+            '<span class="tag is-rounded">Para: ' + escS(DEST_TXT[s.dirigido_a] || s.dirigido_a) + '</span>' +
+            '<span class="tag is-rounded ' + (revisado ? 'is-success' : 'is-warning') + ' is-light">' + (revisado ? 'Revisado' : 'Pendiente') + '</span>' +
+            '<span class="tag is-rounded is-dark">' + escS(s.fecha) + '</span>' +
+          '</div>' +
+          '<p>' + escS(s.descripcion) + '</p>' +
+          (s.respuesta ? '<div class="sug-respuesta"><strong>Respuesta:</strong> ' + escS(s.respuesta) + '</div>' : '') +
+          '<button type="button" class="button is-small is-danger is-light is-rounded mt-3" data-borrar="' + s.id + '">Eliminar</button>' +
+        '</div>';
+      }).join('');
+    } catch (err) {
+      lista.innerHTML = '<p class="has-text-danger">' + escS(err.message) + '</p>';
+    }
+  }
+
+  if (lista) {
+    lista.addEventListener('click', async e => {
+      const b = e.target.closest('[data-borrar]');
+      if (!b || !confirm('¿Eliminar este reporte?')) return;
+      const fd = new FormData();
+      fd.append('accion', 'eliminar');
+      fd.append('id', b.dataset.borrar);
+      try {
+        const r = await llamarAPI(URL_SUG, { method: 'POST', body: fd });
+        mensaje(r.mensaje, r.ok);
+        if (r.ok) cargarMias();
+      } catch (err) { mensaje(err.message, false); }
+    });
+  }
+
+  cargarMias();
 })();

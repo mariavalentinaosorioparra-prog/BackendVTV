@@ -11,6 +11,18 @@
     const impactoTxt = r.permit.includes('a') ? 'Todos los niveles de impacto' : r.permit.includes('m') ? 'Impacto bajo y moderado' : 'Solo bajo impacto';
     let actual = 0;
 
+    // NUEVO: completa el GIF/video de cada ejercicio buscándolo en el banco (por id o por nombre)
+    // (sirve para rutinas asignadas por el admin o guardadas antes, que no traen el campo video)
+    const porId = {}, porNombre = {};
+    getEjercicios().forEach(x => {
+      if (!x.video) return;
+      porId[x.id] = x.video;
+      porNombre[x.nombre] = x.video;
+    });
+    r.dias.forEach(d => d.ejercicios.forEach(e => {
+      if (!e.video) e.video = porId[e.id] || porNombre[e.nombre] || '';
+    }));
+
     document.getElementById('resumen').innerHTML =
       '<span class="tag is-success is-light is-rounded">' + esc(OBJ_TXT[p.objetivo] || p.objetivo) + '</span> ' +
       '<span class="tag is-info is-light is-rounded">IMC ' + p.imc.toFixed(1) + ' · ' + IMC_TXT[p.catIMC] + '</span> ' +
@@ -34,6 +46,7 @@
           '<span class="tag is-rounded">' + esc(dosis) + '</span>' +
           (e.descanso ? '<span class="tag is-rounded">Descanso ' + e.descanso + ' s</span>' : '') +
           '<span class="tag is-rounded">≈ ' + Seguimiento.kcalEjercicio(e, p.peso) + ' kcal</span></div>' +
+          htmlVideo(e) +   // NUEVO: GIF o video del ejercicio
           '<p>' + esc(e.tecnica || '') + '</p></div>';
       }).join('');
       cont.innerHTML = '<div class="dia-tabs">' + tabs + '</div>' +

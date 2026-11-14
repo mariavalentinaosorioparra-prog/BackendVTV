@@ -106,3 +106,45 @@
   margin-top: 0 !important;
   line-height: 1.2 !important;
 }
+
+/* ============================================================
+   RESPONSIVE (celular y tableta). Solo aplica en pantallas
+   pequeñas: en computador todo se ve igual que antes.
+   ============================================================ */
+@media (max-width: 768px) {
+  body.px-4 { padding-left: .75rem !important; padding-right: .75rem !important; }
+  body.py-6 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+
+  /* Encabezados con .level: el botón o la etiqueta bajan a otra línea */
+  .level.is-mobile { flex-wrap: wrap; gap: .75rem; }
+  .level.is-mobile > .level-left,
+  .level.is-mobile > .level-right { flex-shrink: 1; min-width: 0; max-width: 100%; }
+  .level.is-mobile > .level-left .title,
+  .level.is-mobile > .level-left .subtitle { white-space: normal; word-break: break-word; }
+
+  .glass-box { padding: 20px !important; }
+  .title.is-3 { font-size: 1.5rem !important; }
+  .title.is-4 { font-size: 1.3rem !important; }
+  .title.is-5 { font-size: 1.1rem !important; }
+
+  /* Botones en fila (Guardar / Limpiar / Volver) pasan a ocupar todo el ancho */
+  .field.is-grouped { flex-wrap: wrap; gap: .5rem; }
+  .field.is-grouped > .control { flex: 1 1 100%; margin-right: 0 !important; }
+  .field.is-grouped > .control > .button { width: 100%; }
+
+  /* Tablas: se desplazan de lado en vez de romper la página */
+  .table-container, .lista-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  img, video, iframe, model-viewer { max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+  /* Calendario: 2 días por fila en el celular */
+  #calendarioContainer > .column { flex: none; width: 50%; }
+  #calendarioContainer .tag { white-space: normal; height: auto; text-align: center; }
+  .calendar-grid { grid-template-columns: repeat(4, 1fr); }
+  .is-flex.is-justify-content-space-around { flex-wrap: wrap; gap: .5rem; }
+  .level.is-mobile > .level-right { flex-basis: 100%; justify-content: flex-start; }
+}
+@media (max-width: 360px) {
+  #calendarioContainer > .column { width: 100%; }
+}

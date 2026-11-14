@@ -11,6 +11,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../css/adm.css">
   <link rel="stylesheet" href="../css/alertas.css">
+  <style>
+    .sug-card { border: 1px solid rgba(255,255,255,.15); border-radius: 12px; padding: 1rem; margin-bottom: .75rem; }
+    .sug-card.pendiente { border-color: rgba(250,204,21,.45); }
+    .sug-card p { white-space: pre-line; }
+    .sug-respuesta { margin-top: .75rem; padding: .6rem .8rem; border-radius: 8px; background: rgba(34,197,94,.12); white-space: pre-line; }
+    .tag[hidden] { display: none !important; }
+  </style>
 </head>
 <body class="py-6 px-4">
 
@@ -109,10 +116,46 @@
 
     </div>
 
+    <!-- ===== Cajón de sugerencias: lo que envían los usuarios ===== -->
+    <h2 class="title is-5 mb-3">
+      Cajón de sugerencias
+      <span id="badgePendientes" class="tag is-warning is-rounded ml-2" hidden></span>
+    </h2>
+    <div class="box glass-box mb-5">
+      <div class="columns is-mobile is-vcentered mb-2">
+        <div class="column">
+          <div class="select is-fullwidth is-small">
+            <select id="filtroDirigido">
+              <option value="">Todos los destinatarios</option>
+              <option value="entrenador">Entrenador</option>
+              <option value="nutriologo">Nutriólogo</option>
+            </select>
+          </div>
+        </div>
+        <div class="column">
+          <div class="select is-fullwidth is-small">
+            <select id="filtroEstado">
+              <option value="">Todos los estados</option>
+              <option value="pendiente" selected>Pendientes</option>
+              <option value="revisado">Revisados</option>
+            </select>
+          </div>
+        </div>
+        <div class="column is-narrow">
+          <button id="btnRecargarSug" type="button" class="button is-small is-light is-outlined is-rounded" title="Actualizar">
+            <span class="icon"><i class="fas fa-rotate"></i></span>
+          </button>
+        </div>
+      </div>
+      <div id="listaSugerenciasAdm"><p class="has-text-grey-light">Cargando…</p></div>
+    </div>
+    <!-- ===== Fin cajón de sugerencias ===== -->
+
   </div>
 
   <!-- IMPORTANTE: Primero alertas.js y luego adm.js -->
-  <script src="../js/alertas.js"></script>
-  <script src="../js/adm.js"></script>
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/alertas.js?v=2"></script>
+  <script src="../js/adm.js?v=2"></script>
 </body>
 </html>
